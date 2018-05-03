@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="screen-orientation" content="portrait">
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+</head>
+<style>
+	body {
+                           font-family: "SimHei";
+             }
+</style>
+<body style="background-color: #FFF;">
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item" >
+			<span class="mui-icon mui-icon-bars"></span>
+			<span class="mui-tab-label">流水</span>
+		</a>
+		<a class="mui-tab-item" >
+			<span class="mui-icon mui-icon-contact"></span>
+			<span class="mui-tab-label">账户</span>
+		</a>
+		<a class="mui-tab-item" >
+			<span class="mui-icon mui-icon-paperclip"></span>
+			<span class="mui-tab-label">图表</span>
+		</a>
+	</nav>
+		<div class="mui-card" style="background-image:url(images/cbd.jpg);margin:0px;position: fixed;left: 0px;right: 0px;height:165px;top: 0px;">
+				<div class="mui-card-content" style="height:50px;">
+					<div class="mui-card-content-inner" style="top:13px; left:5px;">
+						<p style="color: #FFF;">家庭账本</p>
+					</div>
+				</div>
+				<div class="mui-card-content" style="height:115px;">
+					<div class="mui-card-content-inner" style="top:13px; left:5px;">
+						<p style="color: #FFF;margin-bottom:0px">本月支出</p>
+						<p style="color: #FFF;font-size:30px;">0.00</p>
+						<p style="color: #FFF;">本月收入&nbsp;&nbsp;&nbsp;0.00</p>
+					</div>
+				</div>
+		</div>
+		<div class="mui-content-padded" style="position: fixed;left: 0px;right: 0px;height:57px;top:165px;">
+				<button type="button" onClick="toAddView()"  class="mui-btn mui-btn-warning mui-btn-block" style="padding:10px 0px">
+					记一笔
+				</button>
+		</div>
+		<div class="mui-content mui-scroll-wrapper" style="padding-bottom:50px;margin-top:232px;background-color: #FFF;">
+				<div  class="mui-control-content mui-active mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									今天
+									<p class='mui-ellipsis'>还没有记过帐</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class='mui-navigate-right' href="javascript:;">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本周
+									<p class='mui-ellipsis'>12月19日 - 12月25日</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									本年
+									<p class='mui-ellipsis'>2016年</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									今天
+									<p class='mui-ellipsis'>还没有记过帐</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a class="mui-navigate-right">
+								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+								<div class="mui-media-body">
+									今天
+									<p class='mui-ellipsis'>还没有记过帐</p>
+								</div>
+							</a>
+						</li>
+					</ul>
+			</div>
+			
+	</div>
+	
+</body>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript">
+// 监听plusready事件  
+mui.init({
+			swipeBack:true, //启用右滑关闭功能
+				 preloadPages:[
+				    {
+				      url:"add.html",
+				      id:"add",
+				      styles:{},//窗口参数
+				      extras:{},//自定义扩展参数
+				      subpages:[{},{}]//预加载页面的子页面
+				    }
+				  ],
+				  preloadLimit:5
+		});
+
+var beforeY = 0;
+var Height = 0;
+var toAddView = function(){console.log("location change");location.href = "add.html"};
+mui.plusReady(function(){
+	var view = plus.webview.currentWebview();
+	var views = plus.webview.all();
+	toAddView = function(){
+		plus.webview.show("add","zoom-fade-out")
+//		plus.webview.open("add.html");
+		console.log("plus change view");
+	};
+	plus.screen.lockOrientation("portrait-primary");
+//	screen.orientation.lock("portrait-primary");
+	console.log("open index page");
+	// 扩展API加载完毕，现在可以正常调用扩展API
+	view.setStyle({scrollIndicator:'none'});
+});
+mui.ready(function(){
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	var y = 0;
+	var distance = 0;
+	var max_car_height = parseInt(mui(".mui-card")[0].style['height']); 
+	var min_car_height = 25;
+	var mark_height = parseInt(mui(".mui-content-padded")[0].style['height']);
+	var wrapper = document.getElementsByClassName("mui-scroll-wrapper")[0];
+	mui('.mui-scroll-wrapper')[0].addEventListener("touchstart",function(e){
+		var touch = event.touches[0];
+		y = touch.pageY;
+	});
+	mui('.mui-scroll-wrapper')[0].addEventListener("touchmove",function(e){
+		var touch = event.touches[0];
+		var tmp_distance = touch.pageY - y;
+		if(tmp_distance < 0 && distance >= max_car_height - min_car_height){
+			return;
+		}
+		distance = distance - tmp_distance;
+		if(distance >= (max_car_height - min_car_height)){
+			distance = max_car_height - min_car_height;
+			mui(".mui-card")[0].style['height'] = min_car_height + "px";
+			mui(".mui-content-padded").style['top'] = min_car_height + "px";
+		}else if(distance < 0){
+			distance = 0;
+			return;
+		}else{
+			var h = max_car_height - distance;
+		}
+
+		
+		y = touch.pageY;
+	});
+	mui('.mui-scroll-wrapper')[0].addEventListener("touchend",function(e){
+		var touch = event.touches[0];
+		y = touch.pageY;
+	});
+	
+});
+</script>
+</html>

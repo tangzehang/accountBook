@@ -1,0 +1,24 @@
+insert into T_first_type(type_name, definedid,category,book_id,create_time) VALUES
+("上班收入",901,2,90001,CURRENT_TIMESTAMP),
+("人情收礼",902,2,90001,CURRENT_TIMESTAMP),
+("其他收入",903,2,90001,CURRENT_TIMESTAMP);
+
+
+
+
+insert into T_second_type(type_name, definedid, first_type_id,category,book_id,create_time) VALUES
+("工资",90101, 901,2,90001,CURRENT_TIMESTAMP ),
+("奖金",90102, 901,2,90001,CURRENT_TIMESTAMP ),
+("加班",90103, 901,2,90001,CURRENT_TIMESTAMP ),
+("兼职",90104, 901,2,90001,CURRENT_TIMESTAMP ),
+
+
+("宝宝红包",90201, 902,2,90001,CURRENT_TIMESTAMP ),
+("个人红包",90202, 902,2,90001,CURRENT_TIMESTAMP ),
+("其他红包",90203, 902,2,90001,CURRENT_TIMESTAMP ),
+
+("意外资产",90301, 903,2,90001,CURRENT_TIMESTAMP ),
+("经营所得",90302, 903,2,90001,CURRENT_TIMESTAMP ),
+("投资",90303, 903,2,90001,CURRENT_TIMESTAMP ),
+("利息",90304, 903,2,90001,CURRENT_TIMESTAMP ),
+("其他",90305, 903,2,90001,CURRENT_TIMESTAMP );

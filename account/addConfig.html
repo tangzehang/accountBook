@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<style>
+	html { overflow: hidden; }
+</style>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="screen-orientation" content="portrait">
+    <title></title>
+    
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link href="css/mui.picker.min.css" rel="stylesheet" />
+    <link href="css/user.css" rel="stylesheet" />
+    <link href="css/animations.css" rel="stylesheet" />
+</head>
+<style>
+	.pt-page {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        visibility: hidden;
+        overflow: hidden;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+     .pt-page-current,
+    .no-js .pt-page {
+        visibility: visible;
+        z-index: 1;
+    }
+	.orange{
+		background-color: rgb(250,250,250);
+	}
+	.mui-bar-nav{
+		top:0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	.mui-picker{
+		background-color:white;
+	}
+	.mui-input-group .mui-input-speech~.mui-icon-speech,.mui-input-row,input{
+		height:70px !important;
+		font-size:25px;
+		line-height: 27px !important;
+	}
+	.mui-icon.mui-icon-speech{
+		margin-top:12px;
+	}
+	.mui-content{
+		background-color:#FFF;
+		padding-top:0px !important;
+	}
+	.mui-input-group:before{
+		height: 0px;
+	}
+	.mui-input-group:after{
+		height: 0px;
+	}
+	.mui-btn{
+		padding:13px 18px;
+	}
+</style>
+<body style="background-color: #FFF;">
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a  href="#popover" class="mui-icon mui-icon-bars mui-pull-right"></a>
+			<h1 class="mui-title">添加配置</h1>
+	</header>
+	
+	<div class="mui-content">
+		<div style="left:0px;right:0px;height:75px;position:fixed;bottom:0px;z-index: 3;" id="footer">
+			<button id="confirm" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="left:30px;top:10px;width:45%;position:absolute;border-color=#ffd900">确认</button>
+			<button id="add" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="right:20px;top:10px;width:35%;position:absolute;border-color=#ffd900">再记一笔</button>
+		</div>
+	
+		<div class="mui-scroll-wrapper pt-page pt-page-current" style="height:450px; position:absolute;padding-top:44px;">
+			<div class="mui-slider-item mui-control-content mui-active mui-scroll" style="height:451px;"  id="item1mobile">
+					<div class="mui-input-group " >
+						<div class="mui-input-row" id="category-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
+							<label id="category-text" class="my-font" style="width:100%;height:70%;font-size:20px;">分类</label>
+						</div>
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">子分类</label>
+							<input id="payout_num" type="text" placeholder=""  style="color:darkgreen">
+						</div>
+					</div>
+			</div>		
+		</div>
+	
+	
+		<div class="mui-scroll-wrapper pt-page" style="height:450px; position:absolute;padding-top:44px;">
+			<div class="mui-slider-item mui-control-content mui-active mui-scroll" style="height:451px;"  id="item2mobile">
+					<div class="mui-input-group " >
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
+							<input id="payout_num" type="text" placeholder=""  style="color:darkgreen">
+						</div>
+					</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	
+</body>
+<script src="js/mui.min.js"></script>
+<script src="js/mui.picker.min.js"></script>
+<script src="js/dataFunction.js"></script>
+<script src="js/modernizr.js"></script>
+<script type="text/javascript">
+function hasClass( elements,cName ){ 
+
+return !!elements.className.match( new RegExp( "(\\s|^)" + cName + "(\\s|$)") ); // ( \\s|^ ) 判断前面是否有空格 （\\s | $ ）判断后面是否有空格 两个感叹号为转换为布尔值 以方便做判断 
+}; 
+function addClass( elements,cName ){ 
+if( !hasClass( elements,cName ) ){  
+elements.className += " " + cName; 
+}; 
+}; 
+function removeClass( elements,cName ){ 
+if( hasClass( elements,cName ) ){ 
+elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换 
+}; 
+}; 
+ var animEndEventNames = {
+            'WebkitAnimation' : 'webkitAnimationEnd',
+            'OAnimation' : 'oAnimationEnd',
+            'msAnimation' : 'MSAnimationEnd',
+            'animation' : 'animationend'
+       };
+var animEndEventName = animEndEventNames[ Modernizr.prefixed( 'animation' ) ];
+var inClassName = "pt-page-flipInRight pt-page-delay500";
+var outClassName = "pt-page-flipOutLeft";
+change();
+function change(){
+	mui(".pt-page").each(function(index,element){
+		if(hasClass(element,"pt-page-current")){
+			element.addEventListener(animEndEventName,function(){
+				console.log("aa")
+				element.removeEventListener(animEndEventName,null);
+				removeClass(element,"pt-page-current");
+			});
+			removeClass(element,inClassName);
+			addClass(element,outClassName);
+		}else{
+			element.addEventListener(animEndEventName,function(){
+				element.removeEventListener(animEndEventName,null);
+				addClass(element,"pt-page-current");
+			});
+			removeClass(element,outClassName);
+			addClass(element,"pt-page-current");
+			addClass(element,inClassName);
+		}
+	});
+}
+</script>
+</html>

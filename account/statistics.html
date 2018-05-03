@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>ECahrt 示例</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="./css/mui.min.css">
+<style>
+	body {
+       font-family: "SimHei";
+    }
+    .user-left {
+			display: inline-block;
+			position: relative;
+			text-align: left;
+			width: 70%;
+			vertical-align: middle;
+		}
+		
+		.user-right {
+			display: inline-block;
+			position: relative;
+			text-align: right;
+			width: 25%;
+			vertical-align: middle;
+		}
+		
+		.mui-bar-nav {
+			top: 0;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
+				
+		.header{
+			background-size:100%;
+			#background-image:url(images/cbd.jpg);
+		}
+		
+		.car{
+			#background:url(images/cbd.jpg) no-repeat 0 -44px;
+			background-size:100%;
+			background-color:rgb(250,250,250);
+		}
+		
+		.mui-content {
+			background-color: rgb(250,250,250);;
+			padding-top: 0px !important;
+			margin-top: 44px;
+		}
+		
+		body {
+			font-family: "SimHei";
+		}
+</style>
+
+		<style>
+			.chart {
+				height: 230px;
+				margin: 0px;
+				padding: 0px;
+			}
+			h5 {
+				margin-top: 30px;
+				font-weight: bold;
+			}
+			h5:first-child {
+				margin-top: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav header" style="background-color:rgb(250,250,250);">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E;"> </a>
+			<h1 class="mui-title">统计图表</h1>
+		</header>
+
+		<div class="mui-content">
+			<div class="mui-card" style="width:100%;margin-left:0px;position:relative;height:65px;background-color:rgb(250,250,250);">
+				<div class="mui-card-content" style="height:50px;">
+					<div class="mui-card-content-inner" style="top:0px; left:5px;">
+							<div id="segmentedControl" class="mui-segmented-control">
+									<a class="mui-control-item" data-item="day">
+										今日
+									</a>
+									<a class="mui-control-item mui-active" data-item="month">
+										本月
+									</a>
+									<a class="mui-control-item" data-item="year">
+										今年
+									</a>
+							</div>
+						<p style="color: #FFF;margin-bottom:0px"></p>
+					</div>
+				</div>
+			</div>
+			<div class="mui-scroll-wrapper" style="margin-top:109px;background-color: rgb(250,250,250);bottom:0px;">
+				<div class="mui-control-content mui-active mui-scroll">
+					<h5>支出类型比例</h5>
+					<div class="chart" id="category"></div>
+					<h5>支出账户比例</h5>
+					<div class="chart" id="account"></div>
+					<h5>支出用户比例</h5>
+					<div class="chart" id="user"></div>
+				</div>
+			</div>
+		</div>
+		<script src="./js/mui.min.js"></script>
+		<script src="./js/echarts.min.js"></script>
+		<script src="./js/dataFunction.js"></script>
+		<script>
+			mui.ready(function(){
+				mui('.mui-scroll-wrapper').scroll({
+				indicators: false
+				});
+				mui('.mui-scroll-wrapper')[0].addEventListener("dragend",function(e){
+					var id = this.getAttribute("data-scroll");
+					var item = mui.data[id];
+					console.log(item.y);
+					e.stopPropagation();
+				});
+				
+				
+				if(typeof(plus) != "undefined")
+					plus.webview.getWebviewById("recordDay").addEventListener("show",function(){getOption("month")});
+				else
+					getOption("month");
+				mui(".mui-card-content-inner").on("tap",".mui-control-item",function(){
+					var item = this;
+					var s = item.getAttribute("data-item");
+					getOption(s);
+				})
+			});
+			var getOption = function(chartType) {
+				var time = Date.parse(new Date()) / 1000;
+				var date = getDateByTime(time);
+				var finaldata = {"category":{},"user":{},"account":{}};
+				var nameMap = {"category":"支持类型比例","user":"支出用户比例","account":"支出账户比例"};
+				var accountData = getAccountData();
+				var outCategoryData = getCategoryData();
+				var userData = getUser();
+				var structData = JSON.parse(Storage.getItem(bookId+"_structData"));
+				
+				var chartOption = {
+					calculable: false,
+//					legend: {
+//				        orient: 'vertical',
+//				        left: 'left',
+//				        data: []
+//				    },
+				    tooltip : {
+				        trigger: 'item',
+				        formatter: "{a} <br/>{b} : {c} ({d}%)"
+				    },
+					series: [{
+						name: '访问来源',
+						type: 'pie',
+						label: {normal:{formatter:"{b} : {c} ({d}%)"}},
+						radius: '50%',
+						center: ['50%', '50%'],
+						data: []
+					}]
+				};
+				var tmpDate = date[chartType];
+				if(date[chartType] != undefined && structData != null && structData[chartType] != undefined && structData[chartType][tmpDate]){
+						for(var i in structData[chartType][tmpDate]){
+							var tmpData = structData[chartType][tmpDate][i];
+							if(tmpData['operatorType'] == 1 || (tmpData['operatorType'] == 4 && tmpData['totalNum'] < 0)){
+								var category = "损失";
+								var user = "AA";
+								var account = "未知账户";
+								var accountId = tmpData['fromAccountId'];
+								var totalNum = Math.abs(parseFloat(tmpData['totalNum']).toFixed(2));
+								if(accountData[accountId] != undefined){
+									account = accountData[accountId]['name'];
+								}
+								if(tmpData['operatorType'] == 1){
+									var userId = tmpData['fromUser'];
+									var categoryId = tmpData['typeId'];
+									if(userData[userId] != undefined){
+										user = userData[userId]['name'];
+									}
+									
+									if(outCategoryData[categoryId] != undefined){
+										category = outCategoryData[categoryId]['name'];
+									}
+								}
+								if(finaldata['category'][category] == undefined){
+									finaldata['category'][category] = 0
+								}
+								finaldata['category'][category] += totalNum;
+								
+								if(finaldata['user'][user] == undefined){
+									finaldata['user'][user] = 0
+								}
+								finaldata['user'][user] += totalNum;
+								
+								if(finaldata['account'][account] == undefined){
+									finaldata['account'][account] = 0
+								}
+								finaldata['account'][account] += totalNum;
+							}
+						}
+						
+				}
+				for(var i in finaldata){
+							
+//							chartOption.legend.data = [];
+							chartOption.series[0].data = [];
+							chartOption.series[0].name = nameMap[i];
+							for (var j in finaldata[i]){
+//								chartOption.legend.data.push(j);
+								chartOption.series[0].data.push({"name":j,value:finaldata[i][j].toFixed(2)});
+							}
+							var Chart = echarts.init(byId(i));
+							Chart.setOption(chartOption,true);
+						}
+
+//				return chartOption;
+			};
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+//			getOption("month");
+
+//			var pieChart = echarts.init(byId('pieChart'));
+//			pieChart.setOption(getOption('pie'));
+		</script>
+	</body>
+
+</html>

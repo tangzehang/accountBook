@@ -1,0 +1,23 @@
+{
+  "add.html": {
+    "href": "add.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/cbd.jpg"
+    ],
+    "refer": [
+      "add.html"
+    ],
+    "priority": 0
+  }
+}

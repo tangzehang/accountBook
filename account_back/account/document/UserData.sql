@@ -1,0 +1,1 @@
+insert into T_user(user_name, belong_books) values("AA","90001"),("唐逗逗","90001"),("詹逗逗","90001");

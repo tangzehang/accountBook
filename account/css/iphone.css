@@ -1,0 +1,42 @@
+.fontsize{
+	font-size:15px;
+}
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : portrait) {
+/* iphone5 */ 
+.fontsize{
+	font-size:12px;	
+}
+}
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) 
+and (orientation : portrait) { 
+/* iphone4S */
+.fontsize{
+	font-size:11px;	
+}
+}
+
+@media only screen 
+and (min-device-width: 375px) 
+and (max-device-width: 667px) 
+and (orientation : portrait) {
+/*iPhone 6 Portrait*/
+.fontsize{
+	font-size:13px;	
+}
+}
+
+@media only screen 
+and (min-device-width: 414px) 
+and (max-device-width: 736px) 
+and (orientation : portrait) {
+/*iPhone 6+ Portrait*/
+.fontsize{
+	font-size:15px;	
+}
+}

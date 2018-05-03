@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="screen-orientation" content="portrait">
+    <title></title>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+</head>
+<style>
+.user-left{
+	display: inline-block;
+	position:relative;
+	text-align: left;
+	width: 45%;
+	height: 100%;
+	vertical-align: middle;
+}
+.user-right{
+	display: inline-block;
+	position:relative;
+	height:100%;
+	text-align: right;
+	width: 45%;
+	vertical-align:middle ;
+}
+.mui-bar-nav{
+		top:0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	.orange{
+		background-color: #ffd900;
+	}
+	.header{
+			background-size:100%;
+			background-image:url(images/cbd.jpg);
+		}
+		
+		.car{
+			background:url(images/cbd.jpg) no-repeat 0 -44px;
+			background-size:100%;
+			margin-top: 0px;
+		}
+	.mui-content{
+		background-color:#FFF;
+		padding-top:0px !important;
+		/*margin-top:44px;*/
+	}
+	.no-line::after{
+		height: 0px;
+	}
+
+	body {
+                           font-family: "SimHei";
+             }
+</style>
+<body style="background-color: #FFF;">
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E">    </a>
+			<h1 class="mui-title">账户</h1>
+	</header>
+	
+	<div class="mui-content">
+			<div class="mui-card car" style="width:100%;margin-left:0px;position:relative;height:209px;margin-top:0px;">
+				<div class="mui-card-content" style="height:50px;margin-top:44px;">
+					<div class="mui-card-content-inner" style="top:0px; left:5px;">
+						<p style="color: #FFF;font-size:35px;" id="all_count">0.00</p>
+						<p style="color: #FFF;margin-bottom:0px">净资产</p>
+					</div>
+				</div>
+				<div class="mui-card-content" style="height:115px;margin-top:25px;line-height: 15px;">
+					
+				</div>
+			</div>
+			
+			
+			
+			<div class="mui-scroll-wrapper" style="margin-top:209px;background-color: rgb(250,250,250);bottom:0px;">
+				<div  class="mui-control-content mui-active mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" style="background-color: inherit;" id="ListView">
+						
+					</ul>
+			</div>
+			
+		</div>
+	</div>
+
+		<li class="mui-table-view-cell no-line" style="color:rgb(170,170,170);padding-top:0px;padding-bottom:0px;height:20px;font-size:17px;display: none;padding-right: 0px;margin-top:15px;background-color: #FFF;vertical-align:middle;" id="FirstLi">
+				<div class="user-left">
+						移动账户
+				</div>
+				<div class="user-right">
+						0.00
+				</div>
+		</li>
+		
+		<li class="mui-table-view-cell secondLi" style="display: none;padding-right: 0px;background-color: #FFF;" id="SecondLi">
+						<div class="mui-media-body user-left">
+						支付宝
+						</div>
+						<div class="mui-media-body user-right">
+						0.00
+						</div>
+		</li>
+	
+</body>
+<script src="js/mui.min.js"></script>
+<script src="js/dataFunction.js"></script>
+<script type="text/javascript">
+// 监听plusready事件  
+var toRecord = function(id){Storage.setItem("recordName","day");Storage.setItem("accountId",id);location.href="recordDay.html"};
+mui.plusReady(function(){
+	toRecord = function(id){
+		Storage.setItem("recordName","day");
+		Storage.setItem("accountId",id);
+		plus.webview.show("recordDay","zoom-fade-out");
+	};
+});
+mui.init({
+			swipeBack:true, //启用右滑关闭功能
+				 preloadPages:[
+				    {
+				      url:"add.html",
+				      id:"add",
+				      styles:{},//窗口参数
+				      extras:{},//自定义扩展参数
+				      subpages:[{},{}]//预加载页面的子页面
+				    }
+				  ],
+				  preloadLimit:5
+		});
+mui.ready(function(){
+	mui('.mui-scroll-wrapper').scroll({
+		indicators: false
+	});
+	if(typeof(plus) != "undefined"){
+				plus.webview.getWebviewById("account").addEventListener("show",init);
+	}else{
+			init();
+	}
+	
+	mui(".mui-table-view").on("tap",".secondLi",function(){
+		var target = this;
+		var name = target.getAttribute("data");
+		event.stopPropagation();
+		event.preventDefault();
+		toRecord(name);
+	});
+	
+});
+
+function init(){
+	var listView = mui("#ListView")[0];
+	var allData = getAccountDataByType();
+	listView.innerHTML = "";
+	var allAccount = mui("#all_count")[0];
+	allAccount.innerText = "0.00";
+	var all = 0;
+	var firstLi = mui("#FirstLi")[0];
+	var secondLi = mui("#SecondLi")[0];
+//	console.log(JSON.stringify(allData));
+	var mm = 0;
+	for(var i in allData){
+		var tmpData = allData[i];
+		var tmpLi = firstLi.cloneNode(true);
+		if(mm == 0){
+			tmpLi.style.marginTop = "0px";
+		}
+		mm++;
+		tmpLi.removeAttribute("id");
+		tmpLi.style.display = "block";
+		tmpLi.querySelector(".user-left").innerText = i;
+		var tmpAll = 0;
+//		var tableView = tmpLi.querySelector(".mui-table-view");
+		listView.appendChild(tmpLi);
+		for(var j in tmpData){
+			var sData = tmpData[j];
+			var tmpSLi = secondLi.cloneNode(true);
+			tmpSLi.removeAttribute("id");
+			tmpSLi.style.display = "block";
+			tmpSLi.setAttribute("data",sData['definedId']);
+			tmpSLi.querySelector(".user-left").innerText = sData['name'];
+			var totalNum = sData['totalNum'];
+			tmpSLi.querySelector(".user-right").innerText = parseFloat(totalNum).toFixed(2);
+			if(totalNum > 0){
+				tmpSLi.querySelector(".user-right").style.color="red";
+			}else{
+				tmpSLi.querySelector(".user-right").style.color="green";
+			}
+			all += parseFloat(totalNum);
+			tmpAll += parseFloat(totalNum);
+			listView.appendChild(tmpSLi);
+		}
+		tmpLi.querySelector(".user-right").innerText = tmpAll.toFixed(2);
+//		if(tmpAll > 0){
+//			tmpLi.querySelector(".user-right").style.color="red";
+//		}else{
+//			tmpLi.querySelector(".user-right").style.color="green";
+//		}
+		
+	}
+	var tmpLi = firstLi.cloneNode(true);
+	tmpLi.innerHTML = "";
+	tmpLi.style.display = "block";
+	tmpLi.style.height = "2px";
+	tmpLi.style.opacity = 0; 
+	listView.appendChild(tmpLi);
+	
+	
+	allAccount.innerText = all.toFixed(2);
+}
+</script>
+</html>

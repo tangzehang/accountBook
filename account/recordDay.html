@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="screen-orientation" content="portrait">
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/iphone.css" rel="stylesheet" media="screen"/>
+	</head>
+	<style>
+		.user-left {
+			display: inline-block;
+			position: relative;
+			text-align: left;
+			width: 70%;
+			vertical-align: middle;
+		}
+		
+		.user-right {
+			display: inline-block;
+			position: relative;
+			text-align: right;
+			width: 25%;
+			vertical-align: middle;
+		}
+		
+		.mui-bar-nav {
+			top: 0;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
+		
+		.orange {
+			background-color: #ffd900;
+			background-image:url(images/cbd.jpg);
+		}
+		
+		.header{
+			background-size:100%;
+			background-image:url(images/cbd.jpg);
+		}
+		
+		.car{
+			background:url(images/cbd.jpg) no-repeat 0 -44px;
+			background-size:100%;
+		}
+		
+		.mui-content {
+			background-color: #FFF;
+			padding-top: 0px !important;
+			/*margin-top: 44px;*/
+		}
+		
+		body {
+			font-family: "SimHei";
+		}
+	</style>
+
+	<body style="background-color: #FFF;">
+		<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E;"> </a>
+			<h1 class="mui-title">近30日流水</h1>
+		</header>
+
+		<div class="mui-content">
+			<div class="mui-card car" style="width:100%;margin-left:0px;position:relative;height:209px;margin-top:0px;">
+				<div class="mui-card-content" style="height:50px;margin-top:44px;">
+					<div class="mui-card-content-inner" style="top:0px; left:5px;">
+						<p style="color: #FFF;font-size:35px;" id="all_count">0.00</p>
+						<p style="color: #FFF;margin-bottom:0px">结余</p>
+					</div>
+				</div>
+				<div class="mui-card-content" style="height:115px;margin-top:25px;line-height: 15px;">
+					<div class="mui-card-content-inner" style="top:13px; left:5px;width:45%;position:relative;display: inline-block;padding-right: 0px;">
+						<p style="color: #FFF;font-size:20px;" id="in_count">0.00</p>
+						<p style="color: #FFF;">收入</p>
+					</div>
+					<div class="mui-card-content-inner" style="top:13px; left:5px;width:45%;position:relative;display: inline-block;padding-right: 0px;">
+						<p style="color: #FFF;font-size:20px;" id="pay_out">0.00</p>
+						<p style="color: #FFF;">支出</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="mui-scroll-wrapper" style="margin-top:209px;background-color: #FFF;bottom:0px;">
+				<div class="mui-control-content mui-active mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" id="ListView">
+
+					</ul>
+				</div>
+
+			</div>
+		</div>
+
+		<li class="mui-table-view-cell mui-collapse" style="display: none;padding-right: 40px;" id="FirstLi">
+			<a href="#">
+				<div class="mui-media-body  user-left">
+					<span id="date"></span>
+					<p class='mui-ellipsis' id="blank">还没有记过帐</p>
+				</div>
+				<div class="mui-media-body user-right">
+					<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
+					<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
+				</div>
+			</a>
+			<ul class="mui-table-view mui-table-view-chevron">
+				
+			</ul>
+		</li>
+		<li class="mui-table-view-cell message-able" style="display: none;padding-right: 40px;padding-left:15px;" id="SecondLi">
+			<div class="mui-slider-right">
+				<a class="mui-btn mui-btn-red btn-delete">删除</a>
+			</div>
+			<div class="mui-slider-handle">
+					<div class="mui-media-body  user-left">
+						<span id="operatorName" style="font-size: 15px;"></span>
+						<p></p>
+						<span id="name" class="fontsize"></span>
+					</div>
+					<div class="mui-media-body user-right">
+						<p class='mui-ellipsis' id="num" style="font-size:20px;">0.00</p>
+					</div>
+			</div>
+		</li>				
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/dataFunction.js"></script>
+	<script type="text/javascript">
+	var finnalTime = null;
+		// 监听plusready事件  
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		mui.ready(function() {
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: false
+			});
+			if(typeof(plus) != "undefined"){
+				plus.webview.getWebviewById("recordDay").addEventListener("show",init);
+			}else{
+				init();
+			}
+			
+			mui("#ListView").on("tap",".btn-delete",function(event,target,t){
+				var elem = this;
+				var Li = elem.parentNode.parentNode;
+				var definedId = Li.getAttribute("definedId");
+				mui.confirm('确认删除该条记录？', '删除', ['确认', '取消'], function(e) {
+						if (e.index == 0) {
+							var num = delList(definedId);
+							console.log(num);
+							changeNum(num,Li.parentNode.parentNode);
+							Li.parentNode.removeChild(Li);
+							if(typeof(plus) != "undefined"){
+								plus.webview.getWebviewById("HBuilder").evalJS("init()");
+							}
+						} else {
+							setTimeout(function() {
+								mui.swipeoutClose(Li);
+							}, 0);
+						}
+					});
+				
+//				init();
+			});
+			
+			mui("#ListView").on("tap",".message-able",function(event,target,t){
+				var elm = this;
+				var message = elm.getAttribute("message");
+				if(message == "")
+					message = "";
+				mui.toast("备注:"+message,{ duration:'short', type:'div' }) 
+			});
+		});
+		
+		function changeNum(num,Li){
+			var liIn = parseFloat(Li.querySelector(".user-right #in").innerText)
+			var liOut = parseFloat(Li.querySelector(".user-right #out").innerText)
+			var allNum = parseFloat(document.querySelector("#all_count").innerText)
+			var inNum = parseFloat(document.querySelector("#in_count").innerText)
+			var payNum = parseFloat(document.querySelector("#pay_out").innerText)
+			allNum -= num;
+			if(num <0){//支出要少
+				payNum += num;
+				liOut += num;
+				Li.querySelector(".user-right #out").innerText = liOut.toFixed(2);
+				document.querySelector("#pay_out").innerText = payNum.toFixed(2);
+			} else{
+				inNum -= num;
+				liIn -= num;
+				document.querySelector("#in_count").innerText = inNum.toFixed(2);
+				Li.querySelector(".user-right #in").innerText = liIn.toFixed(2);
+			}
+			document.querySelector("#all_count").innerText = allNum.toFixed(2);
+		}
+		
+		function init(){
+			var type = Storage.getItem("recordName");
+			var account = Storage.getItem("accountId");
+			var accountName = "";
+			if(account != "all"){
+				var accountD = getAccountData();
+				if(accountD[account] != undefined)
+					accountName = accountD[account]["name"];
+			}
+			if(type == undefined || type == "" || type == null)
+				type = "day";
+			if(type != "day" && type != "month" && type != "year")
+				type = "day";
+			var today = new Date();
+			var month = today.getMonth() + 1;
+			var year = today.getFullYear();
+			var day = today.getDate();
+			var listView = mui("#ListView")[0];
+			listView.innerHTML = "";
+			var firstLi = mui("#FirstLi")[0];
+			var secondLi = mui("#SecondLi")[0];
+			var st = Date.parse(new Date(year,month-1,day-30,0,0,0));
+			var et = Date.parse(new Date(year,month-1,day+1,0,0,0));
+			finalTime = et;
+//			var currentData = getDayCurrent(st,et,'day');
+			var currentData = JSON.parse(Storage.getItem(bookId+"_structData"));
+			var allIn = 0;
+			var allOut = 0;
+//			console.log(Storage.getItem(bookId+"_structData")); 
+			if(currentData == undefined){
+				currentData = {"day":{},"month":{},"year":{}};
+//				var all = currentData.all;
+			}
+			var td = currentData[type];
+			var length = 30;
+			if(type == "day"){
+				length = 31;
+				if(accountName == "")
+					mui("header .mui-title")[0].innerText = "近31日流水";
+				else
+					mui("header .mui-title")[0].innerText = accountName+"-近31日流水";
+			}
+			if(type == "month"){
+				day = 1;
+				length = 12;
+				mui("header .mui-title")[0].innerText = "近12月流水";
+			}
+			if(type == "year"){
+				month = 1;
+				day = 1;
+				length = 4;
+				mui("header .mui-title")[0].innerText = "近4年流水";
+			}
+			
+			for(var jj = 1;jj <= length;jj++){
+				var startDate = new Date(year,month-1,day,0,0,0)
+				var startTime = startDate.getTime() / 1000;
+				var endDate = new Date(year,month-1,day+1,0,0,0)
+				var endTime = endDate.getTime() / 1000;
+				var tmpLi = firstLi.cloneNode(true);
+				if(jj == 1){
+					tmpLi.className += " mui-active";
+				}
+				tmpLi.removeAttribute("id");
+				tmpLi.style.display = "block";
+				var money = "0.00";
+				var tmpYear = startDate.getFullYear();
+				var tmpMonth = startDate.getMonth() + 1;
+				var tmpDay = startDate.getDate();
+				if(tmpMonth < 10)
+				{
+					tmpMonth = "0"+tmpMonth;
+				}
+				if(tmpDay < 10)
+				{
+					tmpDay = "0"+tmpDay;
+				}
+				var t = tmpYear + "" + tmpMonth + "" + tmpDay;
+				var ddt = tmpYear + "-" + tmpMonth + "-" + tmpDay;
+				if(type == "day"){
+					day--;
+					var t = tmpYear + "" + tmpMonth + "" + tmpDay;
+					var ddt = tmpMonth + "月" + tmpDay + "日";
+				}
+				if(type == "month"){
+					month--;
+					var t = tmpYear + "" + tmpMonth;
+					var ddt = tmpMonth + "月"
+				}
+				if(type == "year"){
+					year--;
+					var t = tmpYear;
+					var ddt = tmpYear + "年";
+				}
+				if(td[t] != undefined){
+					allIn += parseFloat(td[t]["in"]);
+					allOut += parseFloat(td[t]["out"]);
+					tmpLi.querySelector(".user-left #date").innerText = ddt;
+					var tmpAllIn = 0;
+					var tmpAllOut = 0;
+					
+					delete td[t]["in"];
+					delete td[t]["out"];
+					var countNum = 0;
+					var tableView = tmpLi.querySelector(".mui-table-view");
+					var tmpNode;
+					for(var i in td[t]){
+						if(account != "all" && td[t][i]["fromAccountId"] != account && td[t][i]["toAccountId"] != account)
+							continue;
+						countNum++;
+						var tmpSLi = secondLi.cloneNode(true);
+						tmpSLi.removeAttribute("id");
+						tmpSLi.setAttribute("definedId",td[t][i]['definedId']);
+						tmpSLi.setAttribute("message",td[t][i]['message']);
+						tmpSLi.style.display = "block";
+						tmpSLi.querySelector("#name").innerText = td[t][i]['name'];
+						tmpSLi.querySelector("#operatorName").innerText = td[t][i]['operatorName'];
+						if(td[t][i]['operatorType'] == 1){
+							tmpSLi.querySelector("#num").style.color="green";
+							tmpSLi.querySelector("#operatorName").style.color="green";
+							tmpSLi.querySelector("#name").style.color="green";
+							tmpAllOut += parseFloat(td[t][i]['totalNum']);
+						}
+						if(td[t][i]['operatorType'] == 2){
+							tmpSLi.querySelector("#num").style.color="red";
+							tmpSLi.querySelector("#operatorName").style.color="red";
+							tmpSLi.querySelector("#name").style.color="red";
+							tmpAllIn += parseFloat(td[t][i]['totalNum']);
+						}
+						if(td[t][i]['operatorType'] == 3){
+							tmpSLi.querySelector("#num").style.corlor="black";
+						}
+						if(td[t][i]['operatorType'] == 4){
+							if(parseFloat(td[t][i]['totalNum']) > 0){
+								tmpAllIn += parseFloat(td[t][i]['totalNum']);
+							}else{
+								tmpAllOut -= parseFloat(td[t][i]['totalNum']);
+							}
+						}
+						tmpSLi.querySelector("#num").innerText = parseFloat(td[t][i]['totalNum']).toFixed(2);
+						if(countNum == 1)
+						{
+							tableView.appendChild(tmpSLi);
+							tmpNode = tmpSLi;
+						}else{
+							tableView.insertBefore(tmpSLi, tmpNode);
+							tmpNode = tmpSLi;
+						}
+					}
+					if(countNum > 0){
+						tmpLi.querySelector(".user-left #blank").innerText = "";
+					}
+					tmpLi.querySelector(".user-right #in").innerText = tmpAllIn.toFixed(2);
+					tmpLi.querySelector(".user-right #out").innerText = tmpAllOut.toFixed(2);
+				}else{
+					tmpLi.querySelector(".user-left #date").innerText = ddt;
+					tmpLi.querySelector(".user-right #in").innerText = money;
+					tmpLi.querySelector(".user-right #out").innerText = money;
+				}
+				listView.appendChild(tmpLi);
+			}
+			
+				document.querySelector("#all_count").innerText = (allIn - allOut).toFixed(2);
+				document.querySelector("#in_count").innerText = allIn.toFixed(2);
+				document.querySelector("#pay_out").innerText = allOut.toFixed(2);
+		}
+	</script>
+
+</html>

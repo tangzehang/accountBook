@@ -1,4 +1,5 @@
 # accountBook
+<p>示例地址:<a href="http://account.bestot.cn/">http://account.bestot.cn/</a></p>
 <p><b>account_back</b>是后台服务。用python-Django编写。需要安装python2.7并且安装Django模块。</p>
 <p><b>account</b>是前端。用HBuilder（H5）编写。</p>
 <p>搭建过程，</p>

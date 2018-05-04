@@ -244,6 +244,5 @@ function(){
 			}
 		}
 	}
-	
 	return result;
 }

@@ -1,88 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <meta name="screen-orientation" content="portrait">
-    <title></title>
-    <link href="css/mui.min.css" rel="stylesheet"/>
-</head>
-<style>
-	body {
-                font-family: "SimHei";
-}
-.user-left{
-	display: inline-block;
-	position:relative;
-	text-align: left;
-	width: 45%;
-	vertical-align: middle;
-}
-.user-right{
-	display: inline-block;
-	position:relative;
-	text-align: right;
-	width: 45%;
-	vertical-align: middle;
-}
-</style>
-<body style="background-color: #FFF;">
-	<nav class="mui-bar mui-bar-tab">
-		<a class="mui-tab-item" data="month">
-			<span class="mui-icon mui-icon-bars"></span>
-			<span class="mui-tab-label">流水</span>
-		</a>
-		<a class="mui-tab-item" data="account">
-			<span class="mui-icon mui-icon-contact"></span>
-			<span class="mui-tab-label">账户</span>
-		</a>
-		<a class="mui-tab-item" data="statistics">
-			<span class="mui-icon mui-icon-paperclip"></span>
-			<span class="mui-tab-label">图表</span>
-		</a>
-	</nav>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="screen-orientation" content="portrait">
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		body {
+			font-family: "SimHei";
+		}
+		
+		.user-left {
+			display: inline-block;
+			position: relative;
+			text-align: left;
+			width: 45%;
+			vertical-align: middle;
+		}
+		
+		.user-right {
+			display: inline-block;
+			position: relative;
+			text-align: right;
+			width: 45%;
+			vertical-align: middle;
+		}
+	</style>
+
+	<body style="background-color: #FFF;">
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item" data="month">
+				<span class="mui-icon mui-icon-bars"></span>
+				<span class="mui-tab-label">流水</span>
+			</a>
+			<a class="mui-tab-item" data="account">
+				<span class="mui-icon mui-icon-contact"></span>
+				<span class="mui-tab-label">账户</span>
+			</a>
+			<a class="mui-tab-item" data="statistics">
+				<span class="mui-icon mui-icon-paperclip"></span>
+				<span class="mui-tab-label">图表</span>
+			</a>
+			<a class="mui-tab-item" data="self">
+				<span class="mui-icon mui-icon-paperclip"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
 		<div class="mui-card" style="background-image:url(images/cbd.jpg);background-size:100%;margin:0px;position: fixed;left: 0px;right: 0px;height:165px;top: 0px;">
-				<div class="mui-card-content" style="height:50px;">
-					<div class="mui-card-content-inner" style="top:13px; left:5px;right:5px;">
-						<div style="color: #FFF;" class="user-left">家庭账本</div>
-						<div style="color: #FFF;" class="user-right">
-							<button id="refresh" type="button" style="border-color:transparent;background-color: transparent;font-size:18px;" data-loading-icon="mui-spinner mui-spinner-custom" class="mui-btn">
+			<div class="mui-card-content" style="height:50px;">
+				<div class="mui-card-content-inner" style="top:13px; left:5px;right:5px;">
+					<div style="color: #FFF;" class="user-left">家庭账本</div>
+					<div style="color: #FFF;" class="user-right">
+						<button id="refresh" type="button" style="border-color:transparent;background-color: transparent;font-size:18px;" data-loading-icon="mui-spinner mui-spinner-custom" class="mui-btn">
 								<span class="mui-icon mui-icon-spinner mui-spin"></span> 
 								同步
 							</button>
-						</div>
 					</div>
 				</div>
-				<div class="mui-card-content" style="height:115px;">
-					<div class="mui-card-content-inner" style="top:13px; left:5px;">
-						<p style="color: #FFF;margin-bottom:0px">本月支出</p>
-						<p style="color: #FFF;font-size:30px;" id="monthOut">0.00</p>
-						<p style="color: #FFF;">本月收入&nbsp;&nbsp;&nbsp;<span id="monthIn">0.00</span></p>
-					</div>
+			</div>
+			<div class="mui-card-content" style="height:115px;">
+				<div class="mui-card-content-inner" style="top:13px; left:5px;">
+					<p style="color: #FFF;margin-bottom:0px">本月支出</p>
+					<p style="color: #FFF;font-size:30px;" id="monthOut">0.00</p>
+					<p style="color: #FFF;">本月收入&nbsp;&nbsp;&nbsp;<span id="monthIn">0.00</span></p>
 				</div>
+			</div>
 		</div>
 		<div class="mui-content-padded" style="position: fixed;left: 0px;right: 0px;height:57px;top:165px;">
-				<button type="button" onClick="toAddView()"  class="mui-btn mui-btn-warning mui-btn-block" style="padding:10px 0px">
+			<button type="button" onClick="toAddView()" class="mui-btn mui-btn-warning mui-btn-block" style="padding:10px 0px">
 					记一笔
 				</button>
 		</div>
-		<div class="mui-content mui-scroll-wrapper" style="padding-bottom:50px;margin-top:232px;background-color: #FFF;">
-				<div  class="mui-control-content mui-active mui-scroll">
-					<ul class="mui-table-view mui-table-view-chevron">
-						<li class="mui-table-view-cell mui-media" data="day" id="recordDay">
-							<a class="mui-navigate-right">
-								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
-								<div class="mui-media-body user-left">
-									今天
-									<p class='mui-ellipsis' id="blank">还没有记过帐</p>
-								</div>
-								<div class="mui-media-body user-right">
-									<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
-									<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
-								</div>
-							</a>
-						</li>
-						<!--<li class="mui-table-view-cell mui-media" data="recordWeek" id="recordWeek">
+		<div class="mui-content mui-scroll-wrapper" style="padding-bottom:50px;margin-top:233px;background-color: #FFF;">
+			<div class="mui-control-content mui-active mui-scroll">
+				<ul class="mui-table-view mui-table-view-chevron" id="detail">
+					<li class="mui-table-view-cell mui-media" data="day" id="recordDay">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+							<div class="mui-media-body user-left">
+								今天
+								<p class='mui-ellipsis' id="blank">还没有记过帐</p>
+							</div>
+							<div class="mui-media-body user-right">
+								<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
+								<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
+							</div>
+						</a>
+					</li>
+					<!--<li class="mui-table-view-cell mui-media" data="recordWeek" id="recordWeek">
 							<a class="mui-navigate-right">
 								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
 								<div class="mui-media-body user-left">
@@ -95,213 +103,235 @@
 								</div>
 							</a>
 						</li>-->
-						<li class="mui-table-view-cell mui-media" data="month" id="recordMonth">
-							<a class="mui-navigate-right">
-								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
-								<div class="mui-media-body user-left">
-									本月
-									<p class='mui-ellipsis' id="blank">还没有记过帐</p>
-								</div>
-								<div class="mui-media-body user-right">
-									<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
-									<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
-								</div>
-							</a>
-						</li>
-						<li class="mui-table-view-cell mui-media" data="year" id="recordYear">
-							<a class="mui-navigate-right">
-								<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
-								<div class="mui-media-body user-left">
-									今年
-									<p class='mui-ellipsis' id="blank">还没有记过帐</p>
-								</div>
-								<div class="mui-media-body user-right">
-									<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
-									<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
-								</div>
-							</a>
-						</li>
-						
-					</ul>
+					<li class="mui-table-view-cell mui-media" data="month" id="recordMonth">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+							<div class="mui-media-body user-left">
+								本月
+								<p class='mui-ellipsis' id="blank">还没有记过帐</p>
+							</div>
+							<div class="mui-media-body user-right">
+								<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
+								<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media" data="year" id="recordYear">
+						<a class="mui-navigate-right">
+							<span class="mui-icon mui-icon-compose mui-pull-left mui-media-object"></span>
+							<div class="mui-media-body user-left">
+								今年
+								<p class='mui-ellipsis' id="blank">还没有记过帐</p>
+							</div>
+							<div class="mui-media-body user-right">
+								<p class='mui-ellipsis' id="in" style="color: red;font-size:18px;">0.00</p>
+								<p class='mui-ellipsis' id="out" style="color:green;font-size:18px;">0.00</p>
+							</div>
+						</a>
+					</li>
+
+				</ul>
 			</div>
-			
-	</div>
-	
-</body>
-<script src="js/mui.min.js"></script>
-<script src="js/dataFunction.js"></script>
-<script src="js/netData.js"></script>
-<script type="text/javascript">
-// 监听plusready事件  
-mui.init({
-			swipeBack:true, //启用右滑关闭功能
-				 preloadPages:[
-				    {
-				      url:"add.html",
-				      id:"add",
-				      styles:{},//窗口参数
-				      extras:{},//自定义扩展参数
-				      subpages:[{},{}]//预加载页面的子页面
-				    },
-				    {
-				      url:"recordDay.html",
-				      id:"recordDay",
-				      styles:{},//窗口参数
-				      extras:{},//自定义扩展参数
-				      subpages:[{},{}]//预加载页面的子页面
-				    },
-				    {
-				      url:"account.html",
-				      id:"account",
-				      styles:{},//窗口参数
-				      extras:{},//自定义扩展参数
-				      subpages:[{},{}]//预加载页面的子页面
-				    },
-				    {
-				      url:"statistics.html",
-				      id:"statistics",
-				      styles:{},//窗口参数
-				      extras:{},//自定义扩展参数
-				      subpages:[{},{}]//预加载页面的子页面
-				    },
-				  ],
-				  preloadLimit:6
+
+		</div>
+		
+		<div id="popover" class="mui-popover">
+		  <ul class="mui-table-view" id="selfDetail">
+		    <li class="mui-table-view-cell" data="categoryOut"><a href="#">收入分类</a></li>
+		    <li class="mui-table-view-cell" data="categoryIn"><a href="#">消费分类</a></li>
+		    <li class="mui-table-view-cell" data="account"><a href="#">账户</a></li>
+		    <li class="mui-table-view-cell" data="user"><a href="#">花费者</a></li>
+		  </ul>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/dataFunction.js"></script>
+	<script src="js/netData.js"></script>
+	<script type="text/javascript">
+		// 监听plusready事件  
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			preloadPages: [{
+					url: "add.html",
+					id: "add",
+					styles: {}, //窗口参数
+					extras: {}, //自定义扩展参数
+					subpages: [{}, {}] //预加载页面的子页面
+				},
+				{
+					url: "recordDay.html",
+					id: "recordDay",
+					styles: {}, //窗口参数
+					extras: {}, //自定义扩展参数
+					subpages: [{}, {}] //预加载页面的子页面
+				},
+				{
+					url: "account.html",
+					id: "account",
+					styles: {}, //窗口参数
+					extras: {}, //自定义扩展参数
+					subpages: [{}, {}] //预加载页面的子页面
+				},
+				{
+					url: "statistics.html",
+					id: "statistics",
+					styles: {}, //窗口参数
+					extras: {}, //自定义扩展参数
+					subpages: [{}, {}] //预加载页面的子页面
+				},
+			],
+			preloadLimit: 6
 		});
 
-var beforeY = 0;
-var Height = 0;
-var toAddView = function(){location.href = "add.html"};
-var toStatisticsView = function(){location.href = "statistics.html"};
-var toAccountView = function(){location.href = "account.html"};
-var toRecord = function(name){Storage.setItem("recordName",name);Storage.setItem("accountId","all");location.href="recordDay.html"};
+		var beforeY = 0;
+		var Height = 0;
+		var toAddView = function() {
+			location.href = "add.html"
+		};
+		var toStatisticsView = function() {
+			location.href = "statistics.html"
+		};
+		var toAccountView = function() {
+			location.href = "account.html"
+		};
+		var toRecord = function(name) {
+			Storage.setItem("recordName", name);
+			Storage.setItem("accountId", "all");
+			location.href = "recordDay.html"
+		};
 
-var mask = mui.createMask();
-mui.plusReady(function(){
-	var view = plus.webview.currentWebview();
-	var views = plus.webview.all();
-	toAddView = function(){
-		plus.webview.show("add","zoom-fade-out");
-	};
-	toAccountView = function(){
-		plus.webview.show("account","zoom-fade-out");
-	};
-	toStatisticsView = function(){
-		plus.webview.show("statistics","zoom-fade-out");
-	};
-	toRecord = function(name){
-		Storage.setItem("recordName",name);
-		Storage.setItem("accountId","all");
-		plus.webview.show("recordDay","zoom-fade-out");
-	};
-	plus.screen.lockOrientation("portrait-primary");
-//	screen.orientation.lock("portrait-primary");
-	// 扩展API加载完毕，现在可以正常调用扩展API
-	view.setStyle({scrollIndicator:'none'});
-});
-mui.ready(function(){
-	mui('.mui-scroll-wrapper').scroll({
-		indicators: false
-	});
-//	var y = 0;
-//	var distance = 0;
-//	var max_car_height = parseInt(mui(".mui-card")[0].style['height']); 
-//	var min_car_height = 25;
-//	var mark_height = parseInt(mui(".mui-content-padded")[0].style['height']);
-//	var wrapper = document.getElementsByClassName("mui-scroll-wrapper")[0];
-//	mui('.mui-scroll-wrapper')[0].addEventListener("touchstart",function(e){
-//		var touch = event.touches[0];
-//		y = touch.pageY;
-//	});
-//	mui('.mui-scroll-wrapper')[0].addEventListener("touchmove",function(e){
-//		var touch = event.touches[0];
-//		var tmp_distance = touch.pageY - y;
-//		if(tmp_distance < 0 && distance >= max_car_height - min_car_height){
-//			return;
-//		}
-//		distance = distance - tmp_distance;
-//		if(distance >= (max_car_height - min_car_height)){
-//			distance = max_car_height - min_car_height;
-////			mui(".mui-card")[0].style['height'] = min_car_height + "px";
-////			mui(".mui-content-padded").style['top'] = min_car_height + "px";
-//		}else if(distance < 0){
-//			distance = 0;
-//			return;
-//		}else{
-//			var h = max_car_height - distance;
-//		}
-//
-//		
-//		y = touch.pageY;
-//	});
-//	mui('.mui-scroll-wrapper')[0].addEventListener("touchend",function(e){
-//		var touch = event.touches[0];
-//	});
+		var mask = mui.createMask();
+		mui.plusReady(function() {
+			var view = plus.webview.currentWebview();
+			var views = plus.webview.all();
+			toAddView = function() {
+				plus.webview.show("add", "zoom-fade-out");
+			};
+			toAccountView = function() {
+				plus.webview.show("account", "zoom-fade-out");
+			};
+			toStatisticsView = function() {
+				plus.webview.show("statistics", "zoom-fade-out");
+			};
+			toRecord = function(name) {
+				Storage.setItem("recordName", name);
+				Storage.setItem("accountId", "all");
+				plus.webview.show("recordDay", "zoom-fade-out");
+			};
+			plus.screen.lockOrientation("portrait-primary");
+			//	screen.orientation.lock("portrait-primary");
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			view.setStyle({
+				scrollIndicator: 'none'
+			});
+		});
+		mui.ready(function() {
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: false
+			});
+			//	var y = 0;
+			//	var distance = 0;
+			//	var max_car_height = parseInt(mui(".mui-card")[0].style['height']); 
+			//	var min_car_height = 25;
+			//	var mark_height = parseInt(mui(".mui-content-padded")[0].style['height']);
+			//	var wrapper = document.getElementsByClassName("mui-scroll-wrapper")[0];
+			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchstart",function(e){
+			//		var touch = event.touches[0];
+			//		y = touch.pageY;
+			//	});
+			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchmove",function(e){
+			//		var touch = event.touches[0];
+			//		var tmp_distance = touch.pageY - y;
+			//		if(tmp_distance < 0 && distance >= max_car_height - min_car_height){
+			//			return;
+			//		}
+			//		distance = distance - tmp_distance;
+			//		if(distance >= (max_car_height - min_car_height)){
+			//			distance = max_car_height - min_car_height;
+			////			mui(".mui-card")[0].style['height'] = min_car_height + "px";
+			////			mui(".mui-content-padded").style['top'] = min_car_height + "px";
+			//		}else if(distance < 0){
+			//			distance = 0;
+			//			return;
+			//		}else{
+			//			var h = max_car_height - distance;
+			//		}
+			//
+			//		
+			//		y = touch.pageY;
+			//	});
+			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchend",function(e){
+			//		var touch = event.touches[0];
+			//	});
 
-	mui("#refresh")[0].addEventListener("tap",function(event){
-		mui("#refresh").button("loading");
-		setNetData(mask,init);
-		mui("#refresh").button("reset");
-	});
-	
-	mui(".mui-bar-tab").on("tap",".mui-tab-item",function(event){
-		var target = this;
-		var name = target.getAttribute("data");
-		event.stopPropagation();
-		event.preventDefault();
-		if(name == "month")
-			toRecord(name);
-		if(name == "account")
-			toAccountView();
-		if(name == "statistics")
-			toStatisticsView();
-	});
-	
-	mui(".mui-table-view").on("tap",".mui-table-view-cell",function(){
-		var target = this;
-		var name = target.getAttribute("data");
-		event.stopPropagation();
-		event.preventDefault();
-		toRecord(name);
-	});
-	
-	if(typeof(plus) != "undefined")
-	{
-		init();
-		var wb = plus.webview.currentWebview();
-//		console.log("index id:"+wb.id);
-	}else{
-		init();
-	}
-});
-function init(){
-//	console.log("index page initing");
-	var data = getHomeCurrent();
-	document.querySelector("#monthIn").innerHTML = data.month.in.toFixed(2);
-	document.querySelector("#monthOut").innerHTML = data.month.out.toFixed(2);
-	if(data.month.in >0 || data.month.out > 0){
-		document.querySelector("#recordMonth #blank").innerHTML = "";
-	}
-	if(data.day.in >0 || data.day.out > 0){
-		document.querySelector("#recordDay #blank").innerHTML = "";
-	}
-//	if(data.week.in >0 || data.week.out > 0){
-//		document.querySelector("#recordWeek #blank").innerHTML = "";
-//	}
-	if(data.year.in >0 || data.year.out > 0){
-		document.querySelector("#recordYear #blank").innerHTML = "";
-	}
-	
-	document.querySelector("#recordDay #in").innerHTML = data.day.in.toFixed(2);
-	document.querySelector("#recordDay #out").innerHTML = data.day.out.toFixed(2);
-	
-//	document.querySelector("#recordWeek #in").innerHTML = data.week.in.toFixed(2);
-//	document.querySelector("#recordWeek #out").innerHTML = data.week.out.toFixed(2);
-	
-	document.querySelector("#recordMonth #in").innerHTML = data.month.in.toFixed(2);
-	document.querySelector("#recordMonth #out").innerHTML = data.month.out.toFixed(2);
-	
-	document.querySelector("#recordYear #in").innerHTML = data.year.in.toFixed(2);
-	document.querySelector("#recordYear #out").innerHTML = data.year.out.toFixed(2);
-}
-</script>
+			mui("#refresh")[0].addEventListener("tap", function(event) {
+				mui("#refresh").button("loading");
+				setNetData(mask, init);
+				mui("#refresh").button("reset");
+			});
+
+			mui(".mui-bar-tab").on("tap", ".mui-tab-item", function(event) {
+				var target = this;
+				var name = target.getAttribute("data");
+				event.stopPropagation();
+				event.preventDefault();
+				if(name == "month")
+					toRecord(name);
+				if(name == "account")
+					toAccountView();
+				if(name == "statistics")
+					toStatisticsView();
+				if(name == "self")
+					mui('#popover').popover('toggle', target);
+			});
+
+			mui("#detail").on("tap", ".mui-table-view-cell", function() {
+				var target = this;
+				var name = target.getAttribute("data");
+				event.stopPropagation();
+				event.preventDefault();
+				toRecord(name);
+			});
+
+			if(typeof(plus) != "undefined") {
+				init();
+				var wb = plus.webview.currentWebview();
+				//		console.log("index id:"+wb.id);
+			} else {
+				init();
+			}
+		});
+
+		function init() {
+			//	console.log("index page initing");
+			var data = getHomeCurrent();
+			document.querySelector("#monthIn").innerHTML = data.month.in.toFixed(2);
+			document.querySelector("#monthOut").innerHTML = data.month.out.toFixed(2);
+			if(data.month.in > 0 || data.month.out > 0) {
+				document.querySelector("#recordMonth #blank").innerHTML = "";
+			}
+			if(data.day.in > 0 || data.day.out > 0) {
+				document.querySelector("#recordDay #blank").innerHTML = "";
+			}
+			//	if(data.week.in >0 || data.week.out > 0){
+			//		document.querySelector("#recordWeek #blank").innerHTML = "";
+			//	}
+			if(data.year.in > 0 || data.year.out > 0) {
+				document.querySelector("#recordYear #blank").innerHTML = "";
+			}
+
+			document.querySelector("#recordDay #in").innerHTML = data.day.in.toFixed(2);
+			document.querySelector("#recordDay #out").innerHTML = data.day.out.toFixed(2);
+
+			//	document.querySelector("#recordWeek #in").innerHTML = data.week.in.toFixed(2);
+			//	document.querySelector("#recordWeek #out").innerHTML = data.week.out.toFixed(2);
+
+			document.querySelector("#recordMonth #in").innerHTML = data.month.in.toFixed(2);
+			document.querySelector("#recordMonth #out").innerHTML = data.month.out.toFixed(2);
+
+			document.querySelector("#recordYear #in").innerHTML = data.year.in.toFixed(2);
+			document.querySelector("#recordYear #out").innerHTML = data.year.out.toFixed(2);
+		}
+	</script>
+
 </html>

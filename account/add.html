@@ -1,496 +1,525 @@
 <!DOCTYPE html>
 <style>
-	html { overflow: hidden; }
+	html {
+		overflow: hidden;
+	}
 </style>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <meta name="screen-orientation" content="portrait">
-    <title></title>
-    
-    <link href="css/mui.min.css" rel="stylesheet"/>
-    <link href="css/mui.picker.min.css" rel="stylesheet" />
-    <link href="css/user.css" rel="stylesheet" />
-</head>
-<style>
-	
-	.orange{
-		background-color: rgb(250,250,250);
-	}
-	.mui-bar-nav{
-		top:0;
-		-webkit-box-shadow: none;
-		box-shadow: none;
-	}
-	.mui-picker{
-		background-color:white;
-	}
-	.mui-input-group .mui-input-speech~.mui-icon-speech,.mui-input-row,input{
-		height:70px !important;
-		font-size:25px;
-		line-height: 27px !important;
-	}
-	.mui-icon.mui-icon-speech{
-		margin-top:12px;
-	}
-	.mui-content{
-		background-color:#FFF;
-		padding-top:0px !important;
-	}
-	.mui-input-group:before{
-		height: 0px;
-	}
-	.mui-input-group:after{
-		height: 0px;
-	}
-	.mui-btn{
-		padding:13px 18px;
-	}
-</style>
-<body style="background-color: #FFF;">
-	<header class="mui-bar mui-bar-transparent">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="screen-orientation" content="portrait">
+		<title></title>
+
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/mui.picker.min.css" rel="stylesheet" />
+		<link href="css/user.css" rel="stylesheet" />
+	</head>
+	<style>
+		.orange {
+			background-color: rgb(250, 250, 250);
+		}
+		
+		.mui-bar-nav {
+			top: 0;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
+		
+		.mui-picker {
+			background-color: white;
+		}
+		
+		.mui-input-group .mui-input-speech~.mui-icon-speech,
+		.mui-input-row,
+		input {
+			height: 70px !important;
+			font-size: 25px;
+			line-height: 27px !important;
+		}
+		
+		.mui-icon.mui-icon-speech {
+			margin-top: 12px;
+		}
+		
+		.mui-content {
+			background-color: #FFF;
+			padding-top: 0px !important;
+		}
+		
+		.mui-input-group:before {
+			height: 0px;
+		}
+		
+		.mui-input-group:after {
+			height: 0px;
+		}
+		
+		.mui-btn {
+			padding: 13px 18px;
+		}
+	</style>
+
+	<body style="background-color: #FFF;">
+		<header class="mui-bar mui-bar-transparent">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<a  href="#popover" class="mui-icon mui-icon-plusempty mui-pull-right"></a>
+			<!-- <a  href="#popover" class="mui-icon mui-icon-plusempty mui-pull-right"></a> -->
 			<h1 class="mui-title">记一笔</h1>
-	</header>
-	
-	<div class="mui-content">
-		<div id="sliderSegmentedControl" class="orange mui-segmented-control mui-segmented-control-inverted" style="padding-top:44px;">
-					<a class="mui-control-item mui-active" href="#item1mobile" id="payout">
-				支出
-			</a>
-					<a class="mui-control-item" href="#item2mobile" id="income">
-				收入
-			</a>
-					<a class="mui-control-item" href="#item3mobile" id="transfer">
-				转账
-			</a>
-			<a class="mui-control-item" href="#item4mobile" id="remaining">
-				余额
-			</a>
-			
-		</div>
-		<div style="left:0px;right:0px;height:75px;position:fixed;bottom:0px;z-index: 3;" id="footer">
-			<button id="confirm" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="left:30px;top:10px;width:45%;position:absolute;border-color=#ffd900">确认</button>
-			<button id="add" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="right:20px;top:10px;width:35%;position:absolute;border-color=#ffd900">再记一笔</button>
-		</div>
-	
-		<div class="mui-scroll-wrapper" style="height:450px; position:relative">
-		<div class="mui-slider-item mui-control-content mui-active mui-scroll" style="height:451px;"  id="item1mobile">
-				<div class="mui-input-group " >
-					<div class="mui-input-row">
-						<input id="payout_num" type="number" placeholder="0.00"  style="color:darkgreen">
+		</header>
+
+		<div class="mui-content">
+			<div id="sliderSegmentedControl" class="orange mui-segmented-control mui-segmented-control-inverted" style="padding-top:44px;">
+				<a class="mui-control-item mui-active" href="#item1mobile" id="payout">
+					支出
+				</a>
+				<a class="mui-control-item" href="#item2mobile" id="income">
+					收入
+				</a>
+				<a class="mui-control-item" href="#item3mobile" id="transfer">
+					转账
+				</a>
+				<a class="mui-control-item" href="#item4mobile" id="remaining">
+					余额
+				</a>
+
+			</div>
+			<div style="left:0px;right:0px;height:75px;position:fixed;bottom:0px;z-index: 3;" id="footer">
+				<button id="confirm" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="left:30px;top:10px;width:45%;position:absolute;border-color=#ffd900">确认</button>
+				<button id="add" type="button" class="mui-btn mui-btn-warning mui-btn-outlined" style="right:20px;top:10px;width:35%;position:absolute;border-color=#ffd900">再记一笔</button>
+			</div>
+
+			<div class="mui-scroll-wrapper" style="height:450px; position:relative">
+				<div class="mui-slider-item mui-control-content mui-active mui-scroll" style="height:451px;" id="item1mobile">
+					<div class="mui-input-group ">
+						<div class="mui-input-row">
+							<input id="payout_num" type="number" placeholder="0.00" style="color:darkgreen">
+						</div>
+						<div class="mui-input-row" id="category-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
+							<label id="category-text" class="my-font" style="width:100%;height:70%;font-size:20px;">分类</label>
+						</div>
+
+						<div class="mui-input-row" id="account-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
+							<label id="account-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+
+						<div class="mui-input-row" id="from-user">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">花费者</label>
+							<label id="from-user-text" class="my-font" style="width:100%;height:70%;font-size:20px;">花费者</label>
+						</div>
+
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
+							<input id="payout_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;" placeholder="备注">
+						</div>
 					</div>
-					<div class="mui-input-row" id="category-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
-						<label id="category-text" class="my-font" style="width:100%;height:70%;font-size:20px;">分类</label>
+
+				</div>
+				<div class="mui-slider-item mui-control-content" id="item2mobile">
+					<div class="mui-input-group ">
+						<div class="mui-input-row">
+							<input id="income_num" type="number" placeholder="0.00" style="color:red">
+						</div>
+						<div class="mui-input-row" id="income-category-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
+							<label id="income-category-text" class="my-font" style="width:100%;height:70%;font-size:20px;">分类</label>
+						</div>
+
+						<div class="mui-input-row" id="income-account-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
+							<label id="income-account-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+
+						<div class="mui-input-row" id="income-from-user">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">收入者</label>
+							<label id="income-from-user-text" class="my-font" style="width:100%;height:70%;font-size:20px;">收入者</label>
+						</div>
+
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
+							<input id="income_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;" placeholder="备注">
+						</div>
 					</div>
-									
-					<div class="mui-input-row" id="account-input">
-						<label  style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
-						<label id="account-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
-					</div>
-					
-					<div class="mui-input-row" id="from-user">
-						<label  style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">花费者</label>
-						<label id="from-user-text" class="my-font" style="width:100%;height:70%;font-size:20px;">花费者</label>
-					</div>
-			
-					<div class="mui-input-row">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
-						<input id="payout_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;"  placeholder="备注">
+
+				</div>
+				<div class="mui-slider-item mui-control-content" id="item3mobile">
+					<div class="mui-input-group ">
+						<div class="mui-input-row">
+							<input id="transfer_num" type="number" placeholder="0.00" style="color:black">
+						</div>
+						<div class="mui-input-row" id="change-from-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">转出</label>
+							<label id="change-from-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+
+						<div class="mui-input-row" id="change-to-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">转入</label>
+							<label id="change-to-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
+							<input id="transfer_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;" placeholder="备注">
+						</div>
 					</div>
 				</div>
-			
-		</div>
-		<div class="mui-slider-item mui-control-content" id="item2mobile">
-			<div class="mui-input-group " >
-					<div class="mui-input-row">
-						<input id="income_num" type="number" placeholder="0.00"  style="color:red">
+				<div class="mui-slider-item mui-control-content" id="item4mobile">
+					<div class="mui-input-group ">
+						<div class="mui-input-row">
+							<input id="remaining_num" type="number" placeholder="0.00" style="color:black">
+						</div>
+						<div class="mui-input-row" id="remain-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
+							<label id="remain-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
+							<input id="remaining_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;" placeholder="备注">
+						</div>
 					</div>
-					<div class="mui-input-row" id="income-category-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">分类</label>
-						<label id="income-category-text" class="my-font" style="width:100%;height:70%;font-size:20px;">分类</label>
-					</div>
-									
-					<div class="mui-input-row" id="income-account-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
-						<label id="income-account-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
-					</div>
-					
-					<div class="mui-input-row" id="income-from-user">
-						<label  style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">收入者</label>
-						<label id="income-from-user-text" class="my-font" style="width:100%;height:70%;font-size:20px;">收入者</label>
-					</div>
-			
-					<div class="mui-input-row">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
-						<input id="income_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;"  placeholder="备注">
-					</div>
+				</div>
+
 			</div>
-			
-		</div>
-		<div class="mui-slider-item mui-control-content" id="item3mobile">
-			<div class="mui-input-group " >
-					<div class="mui-input-row">
-						<input id="transfer_num" type="number" placeholder="0.00"  style="color:black">
-					</div>
-					<div class="mui-input-row" id="change-from-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">转出</label>
-						<label id="change-from-text" class="my-font"  style="width:100%;height:70%;font-size:20px;">账户</label>
-					</div>
-									
-					<div class="mui-input-row" id="change-to-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">转入</label>
-						<label id="change-to-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
-					</div>
-			
-					<div class="mui-input-row">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
-						<input id="transfer_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;"  placeholder="备注">
-					</div>
-			</div>
-		</div>
-		<div class="mui-slider-item mui-control-content" id="item4mobile">
-			<div class="mui-input-group " >
-					<div class="mui-input-row">
-						<input id="remaining_num" type="number" placeholder="0.00"  style="color:black" >
-					</div>
-					<div class="mui-input-row" id="remain-input">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
-						<label id="remain-text" class="my-font"  style="width:100%;height:70%;font-size:20px;">账户</label>
-					</div>
-			
-					<div class="mui-input-row">
-						<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">备注</label>
-						<input id="remaining_remark" type="text" class="mui-input-speech mui-input-clear" style="width:100%;height:70% !important;font-size:20px;padding-left: 11px;"  placeholder="备注">
-					</div>
-			</div>
-		</div>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.picker.min.js"></script>
+	<script src="js/dataFunction.js"></script>
+	<script type="text/javascript">
 		
-	</div>
-	
-	<div id="popover" class="mui-popover">
-	  <ul class="mui-table-view">
-	    <li class="mui-table-view-cell"><a href="#">添加支出分类</a></li>
-	    <li class="mui-table-view-cell"><a href="#">添加收入分类</a></li>
-	    <li class="mui-table-view-cell"><a href="#">添加账户</a></li>
-	    <li class="mui-table-view-cell"><a href="#">添加花费者</a></li>
-	  </ul>
-	</div>
-	
-</body>
-<script src="js/mui.min.js"></script>
-<script src="js/mui.picker.min.js"></script>
-<script src="js/dataFunction.js"></script>
-<script type="text/javascript">
-function hasClass( elements,cName ){ 
-
-return !!elements.className.match( new RegExp( "(\\s|^)" + cName + "(\\s|$)") ); // ( \\s|^ ) 判断前面是否有空格 （\\s | $ ）判断后面是否有空格 两个感叹号为转换为布尔值 以方便做判断 
-}; 
-function addClass( elements,cName ){ 
-if( !hasClass( elements,cName ) ){  
-elements.className += " " + cName; 
-}; 
-}; 
-function removeClass( elements,cName ){ 
-if( hasClass( elements,cName ) ){ 
-elements.className = elements.className.replace( new RegExp( "(\\s|^)" + cName + "(\\s|$)" )," " ); // replace方法是替换 
-}; 
-}; 
-var doc = document;
-var nowType = "payout";
-var payoutCategory = 0;
-var payoutAccount = 0;
-var inCategory = 0;
-var inAccount = 0;
-var transferIn = 0;
-var transferOut = 0;
-var remainingAccount = 0;
-var fromUser = 0;
-var incomeFromUser = 0;
-var allAccountData = JSON.parse(Storage.getItem(bookId+"_accountName"));
-if(allAccountData == null){
-	 	allAccountData = {};
-}
-var remainingNum = 0;
-var category = doc.getElementById('category-text');
-var account = doc.getElementById("account-text");
-var incomeCategory = doc.getElementById('income-category-text');
-var incomeAccount = doc.getElementById("income-account-text");
-var changeFromText = doc.getElementById('change-from-text');
-var changeToText = doc.getElementById("change-to-text");
-var remainText = doc.getElementById("remain-text");
-var fromUserText = doc.getElementById("from-user-text");
-var incomeFromUserText = doc.getElementById("income-from-user-text");
-var categoryPicker = new mui.PopPicker({layer:2});
-var accountPicker = new mui.PopPicker({layer:2});
-var incomeCategoryPicker = new mui.PopPicker({layer:2});
-var incomeAccountPicker = new mui.PopPicker({layer:2});
-var changeFromPicker = new mui.PopPicker({layer:2});
-var changeToPicker = new mui.PopPicker({layer:2});
-var remainPicker = new mui.PopPicker({layer:2});
-var fromUserPicker = new mui.PopPicker();
-var incomeFromUserPicker = new mui.PopPicker();
-var init = function(){
-	nowType = "payout";
-	 payoutCategory = 0;
-	 payoutAccount = 0;
-	 inCategory = 0;
-	 inAccount = 0;
-	 transferIn = 0;
-	 transferOut = 0;
-	 remainingAccount = 0;
-	 var remainingNum = 0;
-	 allAccountData = JSON.parse(Storage.getItem(bookId+"_accountName"));
-	 if(allAccountData == null){
-	 	allAccountData = {};
-	 }
-	 var  sliders = document.querySelectorAll(".mui-slider-item.mui-control-content "); 
-	 var bars = document.querySelectorAll(".mui-control-item");
-	 for(var i=0; i < sliders.length;i++){
-	 	removeClass(sliders.item(i),"mui-active");
-	 }
-	 for(var i=0; i < bars.length;i++){
-	 	removeClass(bars.item(i),"mui-active");
-	 }
-	 addClass(document.getElementById("item1mobile"),"mui-active");
-	 addClass(document.getElementById("payout"),"mui-active");
-	 category.innerText = "分类";
-	 account.innerText = "账户";
-	 incomeCategory.innerText = "分类";
-	 incomeAccount.innerText="账户";
-	 changeFromText.innerText= "账户";
-	 changeToText.innerText = "账户";
-	 remainText.innerText="账户";	 
-	 var inputs = document.querySelectorAll(".mui-scroll-wrapper input");
-	 for(var i in inputs){
-	 	inputs[i].value = "";
-	 }
-	 categoryPicker.setData(getCategory());
-	 accountPicker.setData(getAccountType());
-	 incomeCategoryPicker.setData(getInCategory());
-	 incomeAccountPicker.setData(getAccountType());
-	 changeFromPicker.setData(getAccountType());
-	 changeToPicker.setData(getAccountType());
-	 remainPicker.setData(getAccountType());
-	 fromUserPicker.setData(getUserSelect());
-	 incomeFromUserPicker.setData(getUserSelect());
-}
-
-var confirm = function(type){
-	if(type == "payout"){
-		var totalNum = doc.querySelector("#payout_num").value;
-		var remark = doc.querySelector("#payout_remark").value;
-		if(payoutAccount == 0 || payoutCategory ==0 || totalNum == 0 || totalNum == "" || fromUser == 0){
-			mui.toast('请正确填写数据');
-			return false;
+		var doc = document;
+		var nowType = "payout";
+		var payoutCategory = 0;
+		var payoutAccount = 0;
+		var inCategory = 0;
+		var inAccount = 0;
+		var transferIn = 0;
+		var transferOut = 0;
+		var remainingAccount = 0;
+		var fromUser = 0;
+		var incomeFromUser = 0;
+		var allAccountData = JSON.parse(Storage.getItem(bookId + "_accountName"));
+		if(allAccountData == null) {
+			allAccountData = {};
 		}
-		var data = {fromUser:fromUser,totalNum:totalNum,operatorType:1,message:remark,typeId:payoutCategory,fromAccountId:payoutAccount};
-		setList(data);
-	}
-	if(type == "income"){
-		var totalNum = doc.querySelector("#income_num").value;
-		var remark = doc.querySelector("#income_remark").value;
-		if(inCategory == 0 || inAccount ==0 || totalNum == 0 || totalNum == "" || incomeFromUser == 0){
-			mui.toast('请正确填写数据');
-			return false;
-		}
-		var data = {fromUser:incomeFromUser,totalNum:totalNum,operatorType:2,message:remark,typeId:inCategory,toAccountId:inAccount};
-		setList(data);
-	}
-	if(type == "transfer"){
-		var totalNum = doc.querySelector("#transfer_num").value;
-		var remark = doc.querySelector("#transfer_remark").value;
-		if(transferIn == 0 || transferOut ==0 || totalNum == 0 || totalNum == "" || transferIn == transferOut){
-			mui.toast('请正确填写数据');
-			return false;
-		}
-		var data = {totalNum:totalNum,operatorType:3,message:remark,fromAccountId:transferIn,toAccountId:transferOut};
-		setList(data);
-	}
-	if(type == "remaining"){
-		var totalNum = doc.querySelector("#remaining_num").value;
-		var remark = doc.querySelector("#remaining_remark").value;
-//		console.log(totalNum);
-		totalNum = parseFloat(totalNum) - parseFloat(remainingNum);
-//		console.log(remainingNum);
-		if(remainingAccount == 0 || totalNum == 0 || totalNum == ""){
-			mui.toast('请正确填写数据');
-			return false;
-		}
-		var data = {totalNum:totalNum,operatorType:4,message:remark,fromAccountId:remainingAccount};
-		setList(data);
-	}
-	return true;
-}
-
-
-
-mui.init({
+		var remainingNum = 0;
+		var category = doc.getElementById('category-text');
+		var account = doc.getElementById("account-text");
+		var incomeCategory = doc.getElementById('income-category-text');
+		var incomeAccount = doc.getElementById("income-account-text");
+		var changeFromText = doc.getElementById('change-from-text');
+		var changeToText = doc.getElementById("change-to-text");
+		var remainText = doc.getElementById("remain-text");
+		var fromUserText = doc.getElementById("from-user-text");
+		var incomeFromUserText = doc.getElementById("income-from-user-text");
+		var categoryPicker = new mui.PopPicker({
+			layer: 2
 		});
-// 监听plusready事件  
-var blurInput = function(){
-	var inputElements = doc.getElementsByTagName("input");
-	Array.prototype.map.call(inputElements,function(a){a.blur();
+		var accountPicker = new mui.PopPicker({
+			layer: 2
 		});
-};
-
-mui.ready(function(){
-//	var categoryPicker = new mui.PopPicker({layer:2});
-//	categoryPicker.setData(getCategory());
-	var categoryButton = doc.getElementById('category-input');
-	if(typeof(plus) != "undefined"){
-		plus.webview.getWebviewById("add").addEventListener("show",init);
-		plus.webview.getWebviewById("add").addEventListener("hide",function(){plus.webview.getWebviewById("HBuilder").evalJS("init()");
-	});}
-	
-	categoryButton.addEventListener("tap",function(event){
-	blurInput();
-	categoryPicker.show(function(item){
-		category.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		payoutCategory = item[1].value;
-	})});
-	
-//	var accountPicker = new mui.PopPicker({layer:2});
-//	accountPicker.setData(getAccountType());
-	var accountButton = doc.getElementById('account-input');
-	
-	accountButton.addEventListener("tap",function(event){
-		blurInput();
-		accountPicker.show(function(item){
-		account.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		payoutAccount = item[1].value;
-	});
-	});
-	
-	
-//	var incomeCategoryPicker = new mui.PopPicker({layer:2});
-//	incomeCategoryPicker.setData(getInCategory());
-	var incomeCategoryButton = doc.getElementById('income-category-input');
-	
-	incomeCategoryButton.addEventListener("tap",function(event){
-	blurInput();
-	incomeCategoryPicker.show(function(item){
-		incomeCategory.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		inCategory = item[1].value;
-	})});
-	
-//	var incomeAccountPicker = new mui.PopPicker({layer:2});
-//	incomeAccountPicker.setData(getAccountType());
-	var incomeAccountButton = doc.getElementById('income-account-input');
-	
-	incomeAccountButton.addEventListener("tap",function(event){
-		blurInput();
-		incomeAccountPicker.show(function(item){
-		incomeAccount.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		inAccount = item[1].value;
-	});
-	});
-	
-	var incomeUserButton = doc.getElementById('income-from-user');
-	
-	incomeUserButton.addEventListener("tap",function(event){
-		blurInput();
-		incomeFromUserPicker.show(function(item){
-		incomeFromUserText.innerText = (item[0] || {}).text;
-		incomeFromUser = item[0].value;
-	});
-	});
-	
-	
-	var UserButton = doc.getElementById('from-user');
-	
-	UserButton.addEventListener("tap",function(event){
-		blurInput();
-		fromUserPicker.show(function(item){
-		fromUserText.innerText = (item[0] || {}).text;
-		fromUser = item[0].value;
-	});
-	});
-	
-	
-//	var changeFromPicker = new mui.PopPicker({layer:2});
-//	changeFromPicker.setData(getAccountType());
-	var changeFromButton = doc.getElementById('change-from-input');
-	
-	changeFromButton.addEventListener("tap",function(event){
-	blurInput();
-	changeFromPicker.show(function(item){
-		changeFromText.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		transferOut = item[1].value;
-	})});
-	
-//	var changeToPicker = new mui.PopPicker({layer:2});
-//	changeToPicker.setData(getAccountType());
-	var changeToButton = doc.getElementById('change-to-input');
-	
-	changeToButton.addEventListener("tap",function(event){
-		blurInput();
-		changeToPicker.show(function(item){
-		changeToText.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		transferIn = item[1].value;
-	});
-	});
-	
-	
-//	var remainPicker = new mui.PopPicker({layer:2});
-//	remainPicker.setData(getAccountType());
-	var remainButton = doc.getElementById('remain-input');
-	
-	remainButton.addEventListener("tap",function(event){
-		blurInput();
-		remainPicker.show(function(item){
-		remainText.innerText = (item[0] || {}).text + " > "+(item[1] || {}).text;
-		remainingAccount = item[1].value;
-//		console.log(remainingAccount);
-		var account = "";
-		remainingNum = 0;
-		if(allAccountData[item[1].value] != undefined)
-		{
-			account = parseFloat(allAccountData[item[1].value].totalNum);
-			remainingNum = account;
+		var incomeCategoryPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var incomeAccountPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var changeFromPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var changeToPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var remainPicker = new mui.PopPicker({
+			layer: 2
+		});
+		var fromUserPicker = new mui.PopPicker();
+		var incomeFromUserPicker = new mui.PopPicker();
+		var init = function() {
+			nowType = "payout";
+			payoutCategory = 0;
+			payoutAccount = 0;
+			inCategory = 0;
+			inAccount = 0;
+			transferIn = 0;
+			transferOut = 0;
+			remainingAccount = 0;
+			var remainingNum = 0;
+			allAccountData = JSON.parse(Storage.getItem(bookId + "_accountName"));
+			if(allAccountData == null) {
+				allAccountData = {};
+			}
+			var sliders = document.querySelectorAll(".mui-slider-item.mui-control-content ");
+			var bars = document.querySelectorAll(".mui-control-item");
+			for(var i = 0; i < sliders.length; i++) {
+				removeClass(sliders.item(i), "mui-active");
+			}
+			for(var i = 0; i < bars.length; i++) {
+				removeClass(bars.item(i), "mui-active");
+			}
+			addClass(document.getElementById("item1mobile"), "mui-active");
+			addClass(document.getElementById("payout"), "mui-active");
+			category.innerText = "分类";
+			account.innerText = "账户";
+			incomeCategory.innerText = "分类";
+			incomeAccount.innerText = "账户";
+			changeFromText.innerText = "账户";
+			changeToText.innerText = "账户";
+			remainText.innerText = "账户";
+			var inputs = document.querySelectorAll(".mui-scroll-wrapper input");
+			for(var i in inputs) {
+				inputs[i].value = "";
+			}
+			categoryPicker.setData(getCategory());
+			accountPicker.setData(getAccountType());
+			incomeCategoryPicker.setData(getInCategory());
+			incomeAccountPicker.setData(getAccountType());
+			changeFromPicker.setData(getAccountType());
+			changeToPicker.setData(getAccountType());
+			remainPicker.setData(getAccountType());
+			fromUserPicker.setData(getUserSelect());
+			incomeFromUserPicker.setData(getUserSelect());
 		}
-//		console.log(account);
-		doc.querySelector("#remaining_num").value = account;
-	});
-	});
+		
+		//提交数据,type表示  支出,收入,转账,余额
+		var confirm = function(type) {
+			if(type == "payout") {
+				var totalNum = doc.querySelector("#payout_num").value;
+				var remark = doc.querySelector("#payout_remark").value;
+				if(payoutAccount == 0 || payoutCategory == 0 || totalNum == 0 || totalNum == "" || fromUser == 0) {
+					mui.toast('请正确填写数据');
+					return false;
+				}
+				var data = {
+					fromUser: fromUser,
+					totalNum: totalNum,
+					operatorType: 1,
+					message: remark,
+					typeId: payoutCategory,
+					fromAccountId: payoutAccount
+				};
+				setList(data);
+			}
+			if(type == "income") {
+				var totalNum = doc.querySelector("#income_num").value;
+				var remark = doc.querySelector("#income_remark").value;
+				if(inCategory == 0 || inAccount == 0 || totalNum == 0 || totalNum == "" || incomeFromUser == 0) {
+					mui.toast('请正确填写数据');
+					return false;
+				}
+				var data = {
+					fromUser: incomeFromUser,
+					totalNum: totalNum,
+					operatorType: 2,
+					message: remark,
+					typeId: inCategory,
+					toAccountId: inAccount
+				};
+				setList(data);
+			}
+			if(type == "transfer") {
+				var totalNum = doc.querySelector("#transfer_num").value;
+				var remark = doc.querySelector("#transfer_remark").value;
+				if(transferIn == 0 || transferOut == 0 || totalNum == 0 || totalNum == "" || transferIn == transferOut) {
+					mui.toast('请正确填写数据');
+					return false;
+				}
+				var data = {
+					totalNum: totalNum,
+					operatorType: 3,
+					message: remark,
+					fromAccountId: transferIn,
+					toAccountId: transferOut
+				};
+				setList(data);
+			}
+			if(type == "remaining") {
+				var totalNum = doc.querySelector("#remaining_num").value;
+				var remark = doc.querySelector("#remaining_remark").value;
+				//		console.log(totalNum);
+				totalNum = parseFloat(totalNum) - parseFloat(remainingNum);
+				//		console.log(remainingNum);
+				if(remainingAccount == 0 || totalNum == 0 || totalNum == "") {
+					mui.toast('请正确填写数据');
+					return false;
+				}
+				var data = {
+					totalNum: totalNum,
+					operatorType: 4,
+					message: remark,
+					fromAccountId: remainingAccount
+				};
+				setList(data);
+			}
+			return true;
+		}
 
-	mui('.mui-scroll-wrapper').scroll({
-		indicators: false
-	});
-	// 扩展API加载完毕，现在可以正常调用扩展API
-	
-	
-	mui("#sliderSegmentedControl").on("tap","a",function(){
-		nowType = this.id;
-//		console.log(nowType);
-	});
-	if(typeof(plus) != "undefined"){
-				plus.webview.getWebviewById("add").addEventListener("show",init);
-			}else{
+		mui.init({});
+		// 监听plusready事件  
+		var blurInput = function() {
+			var inputElements = doc.getElementsByTagName("input");
+			Array.prototype.map.call(inputElements, function(a) {
+				a.blur();
+			});
+		};
+
+		mui.ready(function() {
+			//	var categoryPicker = new mui.PopPicker({layer:2});
+			//	categoryPicker.setData(getCategory());
+			var categoryButton = doc.getElementById('category-input');
+			if(typeof(plus) != "undefined") {
+				plus.webview.getWebviewById("add").addEventListener("show", init);
+				plus.webview.getWebviewById("add").addEventListener("hide", function() {
+					plus.webview.getWebviewById("HBuilder").evalJS("init()");
+				});
+			}
+
+			categoryButton.addEventListener("tap", function(event) {
+				blurInput();
+				categoryPicker.show(function(item) {
+					category.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					payoutCategory = item[1].value;
+				})
+			});
+
+			//	var accountPicker = new mui.PopPicker({layer:2});
+			//	accountPicker.setData(getAccountType());
+			var accountButton = doc.getElementById('account-input');
+
+			accountButton.addEventListener("tap", function(event) {
+				blurInput();
+				accountPicker.show(function(item) {
+					account.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					payoutAccount = item[1].value;
+				});
+			});
+
+			//	var incomeCategoryPicker = new mui.PopPicker({layer:2});
+			//	incomeCategoryPicker.setData(getInCategory());
+			var incomeCategoryButton = doc.getElementById('income-category-input');
+
+			incomeCategoryButton.addEventListener("tap", function(event) {
+				blurInput();
+				incomeCategoryPicker.show(function(item) {
+					incomeCategory.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					inCategory = item[1].value;
+				})
+			});
+
+			//	var incomeAccountPicker = new mui.PopPicker({layer:2});
+			//	incomeAccountPicker.setData(getAccountType());
+			var incomeAccountButton = doc.getElementById('income-account-input');
+
+			incomeAccountButton.addEventListener("tap", function(event) {
+				blurInput();
+				incomeAccountPicker.show(function(item) {
+					incomeAccount.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					inAccount = item[1].value;
+				});
+			});
+
+			var incomeUserButton = doc.getElementById('income-from-user');
+
+			incomeUserButton.addEventListener("tap", function(event) {
+				blurInput();
+				incomeFromUserPicker.show(function(item) {
+					incomeFromUserText.innerText = (item[0] || {}).text;
+					incomeFromUser = item[0].value;
+				});
+			});
+
+			var UserButton = doc.getElementById('from-user');
+
+			UserButton.addEventListener("tap", function(event) {
+				blurInput();
+				fromUserPicker.show(function(item) {
+					fromUserText.innerText = (item[0] || {}).text;
+					fromUser = item[0].value;
+				});
+			});
+
+			//	var changeFromPicker = new mui.PopPicker({layer:2});
+			//	changeFromPicker.setData(getAccountType());
+			var changeFromButton = doc.getElementById('change-from-input');
+
+			changeFromButton.addEventListener("tap", function(event) {
+				blurInput();
+				changeFromPicker.show(function(item) {
+					changeFromText.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					transferOut = item[1].value;
+				})
+			});
+
+			//	var changeToPicker = new mui.PopPicker({layer:2});
+			//	changeToPicker.setData(getAccountType());
+			var changeToButton = doc.getElementById('change-to-input');
+
+			changeToButton.addEventListener("tap", function(event) {
+				blurInput();
+				changeToPicker.show(function(item) {
+					changeToText.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					transferIn = item[1].value;
+				});
+			});
+
+			//	var remainPicker = new mui.PopPicker({layer:2});
+			//	remainPicker.setData(getAccountType());
+			var remainButton = doc.getElementById('remain-input');
+
+			remainButton.addEventListener("tap", function(event) {
+				blurInput();
+				remainPicker.show(function(item) {
+					remainText.innerText = (item[0] || {}).text + " > " + (item[1] || {}).text;
+					remainingAccount = item[1].value;
+					//		console.log(remainingAccount);
+					var account = "";
+					remainingNum = 0;
+					if(allAccountData[item[1].value] != undefined) {
+						account = parseFloat(allAccountData[item[1].value].totalNum);
+						remainingNum = account;
+					}
+					//		console.log(account);
+					doc.querySelector("#remaining_num").value = account;
+				});
+			});
+
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: false
+			});
+			// 扩展API加载完毕，现在可以正常调用扩展API
+
+			mui("#sliderSegmentedControl").on("tap", "a", function() {
+				nowType = this.id;
+				//		console.log(nowType);
+			});
+			if(typeof(plus) != "undefined") {
+				plus.webview.getWebviewById("add").addEventListener("show", init);
+			} else {
 				init();
-		}
-	
-	mui("#footer").on("tap","#confirm",function(event){
-		if(!confirm(nowType)){
-			return;
-		}
-		if(typeof(plus) != "undefined"){
-			plus.webview.currentWebview().hide();
-			plus.webview.getWebviewById("HBuilder").evalJS("init()");
-		}else{
-			location.href = "index.html";
-		}
-	});
-	
-	mui("#footer").on("tap","#add",function(event){
-		if(!confirm(nowType)){
-			return;
-		}
-		init();
-	});
-});
-</script>
+			}
+
+			mui("#footer").on("tap", "#confirm", function(event) {
+				if(!confirm(nowType)) {
+					return;
+				}
+				if(typeof(plus) != "undefined") {
+					plus.webview.currentWebview().hide();
+					plus.webview.getWebviewById("HBuilder").evalJS("init()");
+				} else {
+					location.href = "index.html";
+				}
+			});
+
+			mui("#footer").on("tap", "#add", function(event) {
+				if(!confirm(nowType)) {
+					return;
+				}
+				init();
+			});
+		});
+	</script>
+
 </html>

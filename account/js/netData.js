@@ -12,6 +12,7 @@ function getNetData(typeName,index,mask,callBack){
 		return;
 	}
 	var host = hostName+"/account/"; 
+//	var host = "https://account2.duapp.com/account/";
 	var type = typeName[index];
 	var url = host + type;
 	var Storage=localStorage;
@@ -44,6 +45,7 @@ function getNetData(typeName,index,mask,callBack){
 						if(t["isDel"] == 1){
 							delList(t["definedId"]);
 							var id = t["id"];
+							//本地要删除的数据,服务端显示已经删除,则把本地要删除的数据直接去除即可
 							while(dels.indexOf(id) != -1){
 								dels.splice(dels.indexOf(id),1);
 							}
@@ -52,7 +54,7 @@ function getNetData(typeName,index,mask,callBack){
 						}
 					}
 					Storage.setItem(bookId+"_delsData",JSON.stringify(dels));
-				}else if(type == "accountName"){
+				}else{
 					var tmpItem = Storage.getItem(bookId+"_"+type);
 					if(tmpItem == null)
 						tmpItem = {}
@@ -65,19 +67,6 @@ function getNetData(typeName,index,mask,callBack){
 								t['totalNum'] = tmpItem[t["definedId"]]['totalNum'];
 						}
 						tmpItem[t["definedId"]] = t;
-					}
-					Storage.setItem(bookId+"_"+type,JSON.stringify(tmpItem));
-				}else{
-					var tmpItem = Storage.getItem(bookId+"_"+type);
-					if(tmpItem == null)
-						tmpItem = {}
-					else
-						tmpItem = JSON.parse(tmpItem);
-					for(var i in tmpData){
-						var t = tmpData[i];
-//						if(tmpItem[t["definedId"]] == undefined){
-							tmpItem[t["definedId"]] = t;
-//						}
 					}
 					Storage.setItem(bookId+"_"+type,JSON.stringify(tmpItem));
 				}
@@ -95,6 +84,7 @@ function getNetData(typeName,index,mask,callBack){
 
 function setNetData(mask,callBack){
 	var url = hostName + "/account/setData";
+//	var url = "https://account2.duapp.com/account/setData";
 	var Storage=localStorage;
 	if(typeof(plus) != "undefined"){
 		Storage = plus.storage;

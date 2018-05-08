@@ -370,7 +370,29 @@ var getInCategoryDataByType = function() {
 	}
 	return result;
 }
+/**
+ * 获取用户所有数据,二层索引
+ */
+var getUserDataByType = function() {
+	var result = {};
+	var userData = JSON.parse(Storage.getItem(bookId + "_userData"));
+	for(var i in userData) {
+		var name = userData[i]['name'];
+		if(result[name] == undefined) {
+			result[name] = [];
+		}
+		if(userData[i]['totalNum'] == undefined) {
+			userData[i]['totalNum'] = 0;
+		}
+		result[name].push(userData[i]);
+	}
+	return result;
+}
 
+
+/**
+ * 主页面的数据
+ */
 var getHomeCurrent = function() {
 	var date = new Date();
 	var year = date.getFullYear();
@@ -531,86 +553,78 @@ var setList = function(data) {
 	}
 	//如果在本地已经保存有数据了,说明是同步到服务器之后获取到服务器ID的数据.不再进行记录加减.
 	if(updateSourceData(data)) {
-		return;
+		return true;
 	}
 	//更新年,月,日 的收入支出数据
 	updateStructData(data);
 	var accountData = JSON.parse(Storage.getItem(bookId + "_accountName"));
+	var userData = JSON.parse(Storage.getItem(bookId + "_userData"));
 	if(accountData == null) {
-		accountData = {};
+		mui.toast('请先同步数据');
+		return false;
 	}
-	var type = data.operatorType;
-	var totalNum = parseFloat(data.totalNum);
+	if(userData == null) {
+		mui.toast('请先同步数据');
+		return false;
+	}
+	var type = data['operatorType'];
+	var totalNum = parseFloat(data['totalNum']);
 	if(type == 1) {
 		//支出,支出分类统计数据
 		var typeId = data['typeId'];
 		var categoryOutData = JSON.parse(Storage.getItem(bookId + "_categoryName"));
+		var account = data['fromAccountId'];
+		var userId = data['fromUser'];
 		if(categoryOutData == null) {
-			categoryOutData = {};
+			mui.toast('请先同步数据');
+			return false;
 		}
 		if(categoryOutData[typeId] == undefined) {
-			typeId = definedId; //如果这个分类不存在,则创建一个unknown的分类
-			categoryOutData[typeId] = {
-				name: "unknown",
-				typeId: -1,
-				bookId: bookId,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0,
-				userId: 0
-			};
+			mui.toast('没有此消费分类');
+			return false;
+		}
+		if(accountData[account] == undefined) {
+			mui.toast('没有此账户');
+			return false;
+		}
+		if(userData[userId] == undefined) {
+			mui.toast('没有此用户');
+			return false;
 		}
 		categoryOutData[typeId]['totalNum'] += totalNum;
+		userData[userId]['totalNum'] -= totalNum;
 		Storage.setItem(bookId + "_categoryName", JSON.stringify(categoryOutData));
+		Storage.setItem(bookId + "_userData", JSON.stringify(userData));
 		//账户分类统计数据
-		var account = data['fromAccountId'];
-		if(accountData[account] == undefined) {
-			account = definedId; //如果这个账户不存在,则创建一个unknown的账户
-			accountData[account] = {
-				name: "unknown",
-				typeId: -1,
-				bookId: bookId,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0,
-				userId: 0
-			};
-		}
 		accountData[account]['totalNum'] -= totalNum;
 	}
 	if(type == 2) {
 		//收入,收入分类统计数据
 		var typeId = data['typeId'];
 		var CategoryInData = JSON.parse(Storage.getItem(bookId + "_inCategoryName"));
+		var account = data['toAccountId'];
+		var userId = data['fromUser'];
 		if(CategoryInData == null) {
-			CategoryInData = {};
+			mui.toast('请先同步数据');
+			return false;
 		}
 		if(CategoryInData[typeId] == undefined) {
-			typeId = definedId;
-			CategoryInData[typeId] = {
-				name: "unknown",
-				typeId: -1,
-				bookId: bookId,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0,
-				userId: 0
-			};
+			mui.toast('没有此收入分类');
+			return false;
+		}
+		if(accountData[account] == undefined) {
+			mui.toast('没有此账户');
+			return false;
+		}
+		if(userData[userId] == undefined) {
+			mui.toast('没有此用户');
+			return false;
 		}
 		CategoryInData[typeId]['totalNum'] += totalNum;
 		Storage.setItem(bookId + "_inCategoryName", JSON.stringify(CategoryInData));
+		userData[userId]['totalNum'] += totalNum;
+		Storage.setItem(bookId + "_userData", JSON.stringify(userData));
 		//账户分类统计数据
-		var account = data['toAccountId'];
-		if(accountData[account] == undefined) {
-			account = definedId;
-			accountData[account] = {
-				name: "unknown",
-				typeId: -1,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0
-			};
-		}
 		accountData[account]['totalNum'] += totalNum;
 	}
 	if(type == 3) {
@@ -618,24 +632,12 @@ var setList = function(data) {
 		var toAccount = data['toAccountId'];
 		var fromAccount = data['fromAccountId'];
 		if(accountData[toAccount] == undefined) {
-			toAccount = definedId;
-			accountData[toAccount] = {
-				name: "unknown",
-				typeId: -1,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0
-			};
+			mui.toast('没有转入账户');
+			return false;
 		}
 		if(accountData[fromAccount] == undefined) {
-			fromAccount = definedId;
-			accountData[fromAccount] = {
-				name: "unknown",
-				typeId: -1,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0
-			};
+			mui.toast('没有转出账户');
+			return false;
 		}
 		accountData[toAccount]['totalNum'] -= totalNum;
 		accountData[fromAccount]['totalNum'] += totalNum;
@@ -644,14 +646,8 @@ var setList = function(data) {
 		//余额修改,账户修改
 		var account = data['fromAccountId'];
 		if(accountData[account] == undefined) {
-			account = definedId;
-			accountData[account] = {
-				name: "unknown",
-				typeId: -1,
-				id: -1,
-				definedId: definedId,
-				totalNum: 0
-			};
+			mui.toast('没有此账户');
+			return false;
 		}
 		accountData[account]['totalNum'] += totalNum;
 		//支出分类或者收入分类.
@@ -659,7 +655,7 @@ var setList = function(data) {
 			var typeId = "-1";
 			var CategoryInData = JSON.parse(Storage.getItem(bookId + "_inCategoryName"));
 			if(CategoryInData == null) {
-				CategoryInData = {};
+				CategoryOutData = {};
 			}
 			if(CategoryInData[typeId] == undefined) {
 				CategoryInData[typeId] = {
@@ -672,7 +668,7 @@ var setList = function(data) {
 					userId: 0
 				};
 			}
-			CategoryInData[typeId]['totalNum'] += totalNum;
+			CategoryInData[typeId]['totalNum'] += Math.abs(totalNum);
 			Storage.setItem(bookId + "_inCategoryName", JSON.stringify(CategoryInData));
 		} else {
 			var typeId = "-1";
@@ -691,11 +687,12 @@ var setList = function(data) {
 					userId: 0
 				};
 			}
-			CategoryOutData[typeId]['totalNum'] += totalNum;
+			CategoryOutData[typeId]['totalNum'] += Math.abs(totalNum);
 			Storage.setItem(bookId + "_categoryName", JSON.stringify(CategoryOutData));
 		}
 	}
 	Storage.setItem(bookId + "_accountName", JSON.stringify(accountData));
+	return true;
 }
 
 var delList = function(definedId) {

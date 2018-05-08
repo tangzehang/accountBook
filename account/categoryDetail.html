@@ -66,7 +66,7 @@
 	<body style="background-color: #FFF;">
 		<header class="mui-bar mui-bar-transparent">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E"> </a>
-			<h1 class="mui-title">消费分类</h1>
+			<h1 class="mui-title">账户</h1>
 		</header>
 
 		<div class="mui-content">
@@ -74,7 +74,7 @@
 				<div class="mui-card-content" style="height:50px;margin-top:44px;">
 					<div class="mui-card-content-inner" style="top:0px; left:5px;">
 						<p style="color: #FFF;font-size:35px;" id="all_count">0.00</p>
-						<p style="color: #FFF;margin-bottom:0px">共消费</p>
+						<p style="color: #FFF;margin-bottom:0px" id="allTitle">净资产</p>
 					</div>
 				</div>
 				<div class="mui-card-content" style="height:115px;margin-top:25px;line-height: 15px;">
@@ -92,7 +92,7 @@
 			</div>
 		</div>
 
-		<li class="mui-table-view-cell no-line" style="color:rgb(170,170,170);padding-top:0px;padding-bottom:0px;height:20px;font-size:17px;display: none;padding-right: 0px;margin-top:15px;background-color: #FFF;vertical-align:middle;" id="FirstLi">
+		<li class="mui-table-view-cell no-line" style="color:rgb(170,170,170);padding-top:0px;padding-bottom:0px;height:21px;font-size:17px;display: none;padding-right: 0px;margin-top:15px;background-color: #FFF;vertical-align:middle;" id="FirstLi">
 			<div class="user-left">
 				移动账户
 			</div>
@@ -101,8 +101,8 @@
 			</div>
 		</li>
 
-		<li class="mui-table-view-cell secondLi" style="display: none;padding-right: 0px;background-color: #FFF;" id="SecondLi">
-			<div class="mui-media-body user-left">
+		<li class="mui-table-view-cell secondLi" style="display: none;padding-right: 0px;background-color: #FFF;padding-top: 5px;" id="SecondLi">
+			<div class="mui-media-body user-left" style="margin-left: 10px;">
 				支付宝
 			</div>
 			<div class="mui-media-body user-right">
@@ -116,19 +116,23 @@
 	<script type="text/javascript">
 		// 监听plusready事件  
 		var toRecord = function(id) {
+			var categoryDetail = Storage.getItem("categoryDetail");
 			Storage.setItem("recordName", "day");
-			Storage.setItem("accountId", id);
+			Storage.setItem("recordId", id);
+			Storage.setItem("recordType",categoryDetail);
 			location.href = "recordDay.html"
 		};
 		mui.plusReady(function() {
 			toRecord = function(id) {
+				var categoryDetail = Storage.getItem("categoryDetail");
 				Storage.setItem("recordName", "day");
-				Storage.setItem("accountId", id);
+				Storage.setItem("recordId", id);
+				Storage.setItem("recordType",categoryDetail);
 				plus.webview.show("recordDay", "zoom-fade-out");
 			};
 		});
 		mui.init({
-			swipeBack: false, //启用右滑关闭功能
+			swipeBack: true, //启用右滑关闭功能
 			preloadPages: [{
 				url: "add.html",
 				id: "add",
@@ -159,9 +163,36 @@
 		});
 
 		function init() {
+			var categoryDetail = Storage.getItem("categoryDetail");
+			var allData = getAccountDataByType();
+			var titleName = "账户";
+			var allTitle = "净资产";
+			if(categoryDetail == "account") {
+				titleName = "账户";
+				allTitle = "净资产";
+				allData = getAccountDataByType();
+			}else if(categoryDetail == "categoryOut") {
+				titleName = "支出";
+				allTitle = "总支出";
+				allData = getCategoryDataByType();
+			}else if(categoryDetail == "categoryIn") {
+				titleName = "收入";
+				allTitle = "总收入";
+				allData = getInCategoryDataByType();
+			}else if(categoryDetail == "user"){
+				titleName = "用户";
+				allTitle = "净资产";
+				allData = getUserDataByType();
+			}else {
+				titleName = "账户";
+				allTitle = "净资产";
+				allData = getAccountDataByType();
+			}
+			mui("header .mui-title")[0].innerText = titleName;
+			mui("#allTitle")[0].innerText = allTitle;
 			var listView = mui("#ListView")[0];
-			var allData = getCategoryDataByType();
-			listView.innerHTML = "";
+			
+			listView.innerText = "";
 			var allAccount = mui("#all_count")[0];
 			allAccount.innerText = "0.00";
 			var all = 0;
@@ -191,17 +222,28 @@
 					tmpSLi.querySelector(".user-left").innerText = sData['name'];
 					var totalNum = sData['totalNum'];
 					tmpSLi.querySelector(".user-right").innerText = parseFloat(totalNum).toFixed(2);
-					tmpSLi.querySelector(".user-right").style.color = "green";
+					if(categoryDetail == "account") {
+						if(totalNum > 0) {
+							tmpSLi.querySelector(".user-right").style.color = "red";
+						} else {
+							tmpSLi.querySelector(".user-right").style.color = "green";
+						}
+					}else if(categoryDetail == "categoryOut") {
+						tmpSLi.querySelector(".user-right").style.color = "green";
+					}else if(categoryDetail == "categoryIn") {
+						tmpSLi.querySelector(".user-right").style.color = "red";
+					}else{
+						if(totalNum > 0) {
+							tmpSLi.querySelector(".user-right").style.color = "red";
+						} else {
+							tmpSLi.querySelector(".user-right").style.color = "green";
+						}
+					}
 					all += parseFloat(totalNum);
 					tmpAll += parseFloat(totalNum);
 					listView.appendChild(tmpSLi);
 				}
 				tmpLi.querySelector(".user-right").innerText = tmpAll.toFixed(2);
-				//		if(tmpAll > 0){
-				//			tmpLi.querySelector(".user-right").style.color="red";
-				//		}else{
-				//			tmpLi.querySelector(".user-right").style.color="green";
-				//		}
 
 			}
 			var tmpLi = firstLi.cloneNode(true);

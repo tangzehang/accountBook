@@ -286,6 +286,7 @@
 		
 		//提交数据,type表示  支出,收入,转账,余额
 		var confirm = function(type) {
+			var result = false;
 			if(type == "payout") {
 				var totalNum = doc.querySelector("#payout_num").value;
 				var remark = doc.querySelector("#payout_remark").value;
@@ -301,7 +302,7 @@
 					typeId: payoutCategory,
 					fromAccountId: payoutAccount
 				};
-				setList(data);
+				result = setList(data);
 			}
 			if(type == "income") {
 				var totalNum = doc.querySelector("#income_num").value;
@@ -318,7 +319,7 @@
 					typeId: inCategory,
 					toAccountId: inAccount
 				};
-				setList(data);
+				result = setList(data);
 			}
 			if(type == "transfer") {
 				var totalNum = doc.querySelector("#transfer_num").value;
@@ -334,7 +335,7 @@
 					fromAccountId: transferIn,
 					toAccountId: transferOut
 				};
-				setList(data);
+				result = setList(data);
 			}
 			if(type == "remaining") {
 				var totalNum = doc.querySelector("#remaining_num").value;
@@ -352,9 +353,9 @@
 					message: remark,
 					fromAccountId: remainingAccount
 				};
-				setList(data);
+				result = setList(data);
 			}
-			return true;
+			return result;
 		}
 
 		mui.init({});

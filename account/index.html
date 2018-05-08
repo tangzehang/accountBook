@@ -36,17 +36,13 @@
 				<span class="mui-icon mui-icon-bars"></span>
 				<span class="mui-tab-label">流水</span>
 			</a>
-			<a class="mui-tab-item" data="account">
-				<span class="mui-icon mui-icon-contact"></span>
-				<span class="mui-tab-label">账户</span>
-			</a>
 			<a class="mui-tab-item" data="statistics">
 				<span class="mui-icon mui-icon-paperclip"></span>
 				<span class="mui-tab-label">图表</span>
 			</a>
 			<a class="mui-tab-item" data="self">
 				<span class="mui-icon mui-icon-paperclip"></span>
-				<span class="mui-tab-label">我的</span>
+				<span class="mui-tab-label">详情</span>
 			</a>
 		</nav>
 		<div class="mui-card" style="background-image:url(images/cbd.jpg);background-size:100%;margin:0px;position: fixed;left: 0px;right: 0px;height:165px;top: 0px;">
@@ -135,12 +131,12 @@
 
 		</div>
 		
-		<div id="popover" class="mui-popover">
+		<div id="popover" class="mui-popover" style="width: 120px;">
 		  <ul class="mui-table-view" id="selfDetail">
-		    <li class="mui-table-view-cell" data="categoryOut"><a href="#">收入分类</a></li>
-		    <li class="mui-table-view-cell" data="categoryIn"><a href="#">消费分类</a></li>
+		    <li class="mui-table-view-cell" data="categoryOut"><a href="#">支出</a></li>
+		    <li class="mui-table-view-cell" data="categoryIn"><a href="#">收入</a></li>
 		    <li class="mui-table-view-cell" data="account"><a href="#">账户</a></li>
-		    <li class="mui-table-view-cell" data="user"><a href="#">花费者</a></li>
+		    <li class="mui-table-view-cell" data="user"><a href="#">用户</a></li>
 		  </ul>
 		</div>
 	</body>
@@ -166,8 +162,8 @@
 					subpages: [{}, {}] //预加载页面的子页面
 				},
 				{
-					url: "account.html",
-					id: "account",
+					url: "categoryDetail.html",
+					id: "categoryDetail",
 					styles: {}, //窗口参数
 					extras: {}, //自定义扩展参数
 					subpages: [{}, {}] //预加载页面的子页面
@@ -178,7 +174,7 @@
 					styles: {}, //窗口参数
 					extras: {}, //自定义扩展参数
 					subpages: [{}, {}] //预加载页面的子页面
-				},
+				}
 			],
 			preloadLimit: 6
 		});
@@ -191,12 +187,14 @@
 		var toStatisticsView = function() {
 			location.href = "statistics.html"
 		};
-		var toAccountView = function() {
-			location.href = "account.html"
+		var toCategoryDetailView = function(detail) {
+			Storage.setItem("categoryDetail", detail);
+			location.href = "categoryDetail.html"
 		};
 		var toRecord = function(name) {
 			Storage.setItem("recordName", name);
-			Storage.setItem("accountId", "all");
+			Storage.setItem("recordId", "all");
+			Storage.setItem("recordType","all");
 			location.href = "recordDay.html"
 		};
 
@@ -207,15 +205,17 @@
 			toAddView = function() {
 				plus.webview.show("add", "zoom-fade-out");
 			};
-			toAccountView = function() {
-				plus.webview.show("account", "zoom-fade-out");
+			toCategoryDetailView = function(detail) {
+				Storage.setItem("categoryDetail", detail);
+				plus.webview.show("categoryDetail", "zoom-fade-out");
 			};
 			toStatisticsView = function() {
 				plus.webview.show("statistics", "zoom-fade-out");
 			};
 			toRecord = function(name) {
 				Storage.setItem("recordName", name);
-				Storage.setItem("accountId", "all");
+				Storage.setItem("recordId", "all");
+				Storage.setItem("recordType","all");
 				plus.webview.show("recordDay", "zoom-fade-out");
 			};
 			plus.screen.lockOrientation("portrait-primary");
@@ -229,41 +229,7 @@
 			mui('.mui-scroll-wrapper').scroll({
 				indicators: false
 			});
-			//	var y = 0;
-			//	var distance = 0;
-			//	var max_car_height = parseInt(mui(".mui-card")[0].style['height']); 
-			//	var min_car_height = 25;
-			//	var mark_height = parseInt(mui(".mui-content-padded")[0].style['height']);
-			//	var wrapper = document.getElementsByClassName("mui-scroll-wrapper")[0];
-			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchstart",function(e){
-			//		var touch = event.touches[0];
-			//		y = touch.pageY;
-			//	});
-			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchmove",function(e){
-			//		var touch = event.touches[0];
-			//		var tmp_distance = touch.pageY - y;
-			//		if(tmp_distance < 0 && distance >= max_car_height - min_car_height){
-			//			return;
-			//		}
-			//		distance = distance - tmp_distance;
-			//		if(distance >= (max_car_height - min_car_height)){
-			//			distance = max_car_height - min_car_height;
-			////			mui(".mui-card")[0].style['height'] = min_car_height + "px";
-			////			mui(".mui-content-padded").style['top'] = min_car_height + "px";
-			//		}else if(distance < 0){
-			//			distance = 0;
-			//			return;
-			//		}else{
-			//			var h = max_car_height - distance;
-			//		}
-			//
-			//		
-			//		y = touch.pageY;
-			//	});
-			//	mui('.mui-scroll-wrapper')[0].addEventListener("touchend",function(e){
-			//		var touch = event.touches[0];
-			//	});
-
+			
 			mui("#refresh")[0].addEventListener("tap", function(event) {
 				mui("#refresh").button("loading");
 				setNetData(mask, init);
@@ -292,11 +258,19 @@
 				event.preventDefault();
 				toRecord(name);
 			});
+			
+			mui("#selfDetail").on("tap", ".mui-table-view-cell", function() {
+				var target = this;
+				var detail = target.getAttribute("data");
+				event.stopPropagation();
+				event.preventDefault();
+				toCategoryDetailView(detail);
+			});
+			
 
 			if(typeof(plus) != "undefined") {
 				init();
 				var wb = plus.webview.currentWebview();
-				//		console.log("index id:"+wb.id);
 			} else {
 				init();
 			}

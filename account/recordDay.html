@@ -59,11 +59,19 @@
 	</style>
 
 	<body style="background-color: #FFF;">
+		
 		<header class="mui-bar mui-bar-transparent">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E;"> </a>
+			<a href="#popover" class="mui-icon mui-icon-reload mui-pull-right" style="color:#F0AD4E;"> </a>
 			<h1 class="mui-title">近30日流水</h1>
 		</header>
-
+		<div id="popover" class="mui-popover" style="width:80px;">
+		  <ul class="mui-table-view" id="reloadDate">
+		    <li class="mui-table-view-cell" data="year"><a href="#">年</a></li>
+		    <li class="mui-table-view-cell" data="month"><a href="#">月</a></li>
+		    <li class="mui-table-view-cell" data="day"><a href="#">日</a></li>
+		  </ul>
+		</div>
 		<div class="mui-content">
 			<div class="mui-card car" style="width:100%;margin-left:0px;position:relative;height:209px;margin-top:0px;">
 				<div class="mui-card-content" style="height:50px;margin-top:44px;">
@@ -109,18 +117,18 @@
 
 			</ul>
 		</li>
-		<li class="mui-table-view-cell message-able" style="display: none;padding-right: 40px;padding-left:15px;" id="SecondLi">
+		<li class="mui-table-view-cell message-able" style="display: none;padding-right: 40px;padding-left:15px;padding-top: 2px;padding-bottom: 2px;" id="SecondLi">
 			<div class="mui-slider-right">
 				<a class="mui-btn mui-btn-red btn-delete">删除</a>
 			</div>
 			<div class="mui-slider-handle">
 				<div class="mui-media-body  user-left">
-					<span id="operatorName" style="font-size: 15px;"></span>
+					<span id="operatorName" style="font-size: 14px;"></span>
 					<p></p>
-					<span id="name" class="fontsize"></span>
+					<span id="name" style="font-size: 11px;"></span>
 				</div>
 				<div class="mui-media-body user-right">
-					<p class='mui-ellipsis' id="num" style="font-size:20px;">0.00</p>
+					<p class='mui-ellipsis' id="num" style="font-size:16px;">0.00</p>
 				</div>
 			</div>
 		</li>
@@ -176,6 +184,16 @@
 					type: 'div'
 				})
 			});
+			mui("#reloadDate").on("tap", ".mui-table-view-cell", function() {
+				var target = this;
+				var date = target.getAttribute("data");
+				Storage.setItem("recordName",date);
+				event.stopPropagation();
+				event.preventDefault();
+				mui('#popover').popover('toggle');
+				init();
+				
+			});
 		});
 
 		function changeNum(num, Li) {
@@ -200,13 +218,30 @@
 		}
 
 		function init() {
-			var type = Storage.getItem("recordName");
-			var account = Storage.getItem("accountId");
-			var accountName = "";
-			if(account != "all") {
-				var accountD = getAccountData();
-				if(accountD[account] != undefined)
-					accountName = accountD[account]["name"];
+			var type = Storage.getItem("recordName"); //年,月,日流水分类
+			var recordId = Storage.getItem("recordId"); //具体某一个definedId.
+			var recordType = Storage.getItem("recordType");//哪一种类型的,支出,收入,用户
+			var titleName = "";
+			if(recordId != "all" && recordType != "all") {
+				if(recordType == "account") {
+					var data = getAccountData();
+					if(data[recordId] != undefined)
+						titleName = data[recordId]["name"];
+				}else if(recordType == "categoryOut") {
+					var data = getCategoryData();
+					if(data[recordId] != undefined)
+						titleName = data[recordId]["name"];
+				}else if(recordType == "categoryIn") {
+					var data = getInCategoryData();
+					if(data[recordId] != undefined)
+						titleName = data[recordId]["name"];
+				}else if(recordType == "user") {
+					var data = getUser();
+					if(data[recordId] != undefined)
+						titleName = data[recordId]["name"];
+				}else{
+					var titleName = "unknown";
+				}
 			}
 			if(type == undefined || type == "" || type == null)
 				type = "day";
@@ -217,7 +252,7 @@
 			var year = today.getFullYear();
 			var day = today.getDate();
 			var listView = mui("#ListView")[0];
-			listView.innerHTML = "";
+			listView.innerHTML = ""; //清空整个listView
 			var firstLi = mui("#FirstLi")[0];
 			var secondLi = mui("#SecondLi")[0];
 			var st = Date.parse(new Date(year, month - 1, day - 30, 0, 0, 0));
@@ -240,21 +275,27 @@
 			var length = 30;
 			if(type == "day") {
 				length = 31;
-				if(accountName == "")
+				if(titleName == "")
 					mui("header .mui-title")[0].innerText = "近31日流水";
 				else
-					mui("header .mui-title")[0].innerText = accountName + "-近31日流水";
+					mui("header .mui-title")[0].innerText = titleName + "-近31日流水";
 			}
 			if(type == "month") {
 				day = 1;
 				length = 12;
-				mui("header .mui-title")[0].innerText = "近12月流水";
+				if(titleName == "")
+					mui("header .mui-title")[0].innerText = "近12月流水";
+				else
+					mui("header .mui-title")[0].innerText = titleName + "-近12月流水";
 			}
 			if(type == "year") {
 				month = 1;
 				day = 1;
 				length = 4;
-				mui("header .mui-title")[0].innerText = "近4年流水";
+				if(titleName == "")
+					mui("header .mui-title")[0].innerText = "近4年流水";
+				else
+					mui("header .mui-title")[0].innerText = titleName + "-近4年流水";
 			}
 
 			for(var jj = 1; jj <= length; jj++) {
@@ -296,8 +337,8 @@
 					var ddt = tmpYear + "年";
 				}
 				if(td[t] != undefined) {
-					allIn += parseFloat(td[t]["in"]);
-					allOut += parseFloat(td[t]["out"]);
+//					allIn += parseFloat(td[t]["in"]);
+//					allOut += parseFloat(td[t]["out"]);
 					tmpLi.querySelector(".user-left #date").innerText = ddt;
 					var tmpAllIn = 0;
 					var tmpAllOut = 0;
@@ -308,8 +349,31 @@
 					var tableView = tmpLi.querySelector(".mui-table-view");
 					var tmpNode;
 					for(var i in td[t]) {
-						if(account != "all" && td[t][i]["fromAccountId"] != account && td[t][i]["toAccountId"] != account)
-							continue;
+						if(recordType == "account") {
+							if(recordId != "all" && td[t][i]["fromAccountId"] != recordId && td[t][i]["toAccountId"] != recordId)
+								continue;
+						}else if(recordType == "categoryOut") {
+							//分类支出,需要考虑因为修改余额的支出.
+							if(td[t][i]['operatorType'] != 1 && td[t][i]['operatorType'] != 4)
+								continue;
+							//考虑是否点击了修改余额的选项进来. 不是转账情况下考虑是否此分类,如果是转账的记录,考虑是否要这个分类的数据
+							if(recordId != "all" && ((td[t][i]['operatorType'] != 4 && td[t][i]["typeId"] != recordId) || (td[t][i]['operatorType'] == 4 && recordId != -1)))
+								continue;
+						}else if(recordType == "categoryIn") {
+							if(td[t][i]['operatorType'] != 2 && td[t][i]['operatorType'] != 4)
+								continue;
+							//考虑是否点击了修改余额的选项进来. 不是转账情况下考虑是否此分类,如果是转账的记录,考虑是否要这个分类的数据
+							if(recordId != "all" && ((td[t][i]['operatorType'] != 4 && td[t][i]["typeId"] != recordId) || (td[t][i]['operatorType'] == 4 && recordId != -1)))
+								continue;
+						}else if(recordType == "user") {
+							//用户,转账和修改余额没有
+							if(td[t][i]['operatorType'] != 1 && td[t][i]['operatorType'] != 2)
+								continue;
+							if(recordId != "all" && td[t][i]["fromUser"] != recordId)
+								continue;
+						}else{
+							;
+						}
 						countNum++;
 						var tmpSLi = secondLi.cloneNode(true);
 						tmpSLi.removeAttribute("id");
@@ -323,12 +387,14 @@
 							tmpSLi.querySelector("#operatorName").style.color = "green";
 							tmpSLi.querySelector("#name").style.color = "green";
 							tmpAllOut += parseFloat(td[t][i]['totalNum']);
+							allOut += parseFloat(td[t][i]['totalNum']);
 						}
 						if(td[t][i]['operatorType'] == 2) {
 							tmpSLi.querySelector("#num").style.color = "red";
 							tmpSLi.querySelector("#operatorName").style.color = "red";
 							tmpSLi.querySelector("#name").style.color = "red";
 							tmpAllIn += parseFloat(td[t][i]['totalNum']);
+							allIn += parseFloat(td[t][i]['totalNum']);
 						}
 						if(td[t][i]['operatorType'] == 3) {
 							tmpSLi.querySelector("#num").style.corlor = "black";
@@ -336,8 +402,10 @@
 						if(td[t][i]['operatorType'] == 4) {
 							if(parseFloat(td[t][i]['totalNum']) > 0) {
 								tmpAllIn += parseFloat(td[t][i]['totalNum']);
-							} else {
+								allIn += parseFloat(td[t][i]['totalNum']);
+							} else { 
 								tmpAllOut -= parseFloat(td[t][i]['totalNum']);
+								allOut -= parseFloat(td[t][i]['totalNum']);
 							}
 						}
 						tmpSLi.querySelector("#num").innerText = parseFloat(td[t][i]['totalNum']).toFixed(2);

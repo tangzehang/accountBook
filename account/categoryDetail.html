@@ -57,7 +57,21 @@
 		.no-line::after {
 			height: 0px;
 		}
+		.mui-input-group .mui-input-speech~.mui-icon-speech,
+		.mui-input-row,
+		input {
+			height: 70px !important;
+			font-size: 25px;
+			line-height: 27px !important;
+			text-align: left;
+		}
+		.mui-input-group:before {
+			height: 0px;
+		}
 		
+		.mui-input-group:after {
+			height: 0px;
+		}
 		body {
 			font-family: "SimHei";
 		}
@@ -66,6 +80,7 @@
 	<body style="background-color: #FFF;">
 		<header class="mui-bar mui-bar-transparent">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:#F0AD4E"> </a>
+			<a id="addCategory" class="mui-icon mui-icon-plusempty mui-pull-right" style="color:#F0AD4E;"> </a>
 			<h1 class="mui-title">账户</h1>
 		</header>
 
@@ -92,7 +107,7 @@
 			</div>
 		</div>
 
-		<li class="mui-table-view-cell no-line" style="color:rgb(170,170,170);padding-top:0px;padding-bottom:0px;height:21px;font-size:17px;display: none;padding-right: 0px;margin-top:15px;background-color: #FFF;vertical-align:middle;" id="FirstLi">
+		<li class="mui-table-view-cell no-line" style="color:rgb(170,170,170);padding-top:0px;padding-bottom:0px;height:22px;font-size:17px;display: none;padding-right: 0px;margin-top:15px;background-color: #FFF;vertical-align:middle;" id="FirstLi">
 			<div class="user-left">
 				移动账户
 			</div>
@@ -109,6 +124,21 @@
 				0.00
 			</div>
 		</li>
+		
+		
+		<div class="mui-slider-item mui-control-content" style="display:none;" id="addPanel">
+					<div class="mui-input-group" style="background-color: inherit;">
+						<div class="mui-input-row" id="remain-input">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">账户</label>
+							<label id="remain-text" class="my-font" style="width:100%;height:70%;font-size:20px;">账户</label>
+						</div>
+						<div class="mui-input-row">
+							<label style="width:100%;height:30%;font-size:13px;padding-top:12px;padding-bottom:3px;color:grey;">名称</label>
+							<input style="width:100%;height:70%;font-size:20px;" id="remaining_num" type="text" placeholder="" style="color:black">
+						</div>
+					</div>
+		</div>
+		
 
 	</body>
 	<script src="js/mui.min.js"></script>
@@ -150,7 +180,7 @@
 				plus.webview.getWebviewById("account").addEventListener("show", init);
 			} else {
 				init();
-			}
+			};
 
 			mui(".mui-table-view").on("tap", ".secondLi", function() {
 				var target = this;
@@ -159,7 +189,15 @@
 				event.preventDefault();
 				toRecord(name);
 			});
-
+			
+			mui("#addCategory")[0].addEventListener("tap",function(){
+				var addPanel = mui("#addPanel")[0].cloneNode(true);
+				addPanel.removeAttribute("id");
+				addPanel.style.display = "block";
+				mui.confirm(addPanel.outerHTML.replace(/\r\n/g,"").replace(/\n/g,"")," ",["取消","确认"],function(btn){
+					console.log(btn.index);
+				},"div");
+			});
 		});
 
 		function init() {
